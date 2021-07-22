@@ -1,9 +1,11 @@
-import { Colors } from 'react-native-paper';
+import {Colors} from 'react-native-paper';
 
 export const theme = {
   background: Colors.white,
   text: Colors.black,
   imageBackground: Colors.grey300,
+  imageButtonBackground: Colors.grey500,
+  imageButtonIcon: Colors.white,
   label: Colors.grey500,
   inputPlaceholder: Colors.grey500,
   inputBorder: Colors.grey500,

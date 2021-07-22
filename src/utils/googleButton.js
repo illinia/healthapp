@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from "react-native-google-signin";
-import { Alert, Text } from 'react-native';
-import { Button } from '../components';
+import React, {useEffect, useState} from 'react';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from 'react-native-google-signin';
+import {Alert, Text} from 'react-native';
+import {Button} from '../components';
 import auth from '@react-native-firebase/auth';
 
 const GoogleButton = () => {
@@ -22,13 +26,15 @@ const GoogleButton = () => {
   function onAuthStateChanged(user) {
     setUserInfo(user);
     console.log(user);
-    if (user) setLoggedIn(true);
+    if (user) {
+      setLoggedIn(true);
+    }
   }
 
   const _signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const { accessToken, idToken } = await GoogleSignin.signIn();
+      const {accessToken, idToken} = await GoogleSignin.signIn();
       setLoggedIn(true);
       const credential = auth.GoogleAuthProvider.credential(
         idToken,
@@ -63,7 +69,7 @@ const GoogleButton = () => {
   return (
     <>
       <GoogleSigninButton
-        style={{ width: '100%', height: 48 }}
+        style={{width: '100%', height: 48}}
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Dark}
         onPress={_signIn}
