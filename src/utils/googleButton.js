@@ -1,14 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from 'react-native-google-signin';
-import {Alert, Text} from 'react-native';
-import {Button} from '../components';
+import {Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
+import {UserContext, ProgressContext} from '../context';
 
 const GoogleButton = () => {
+  const {spinner} = useContext(ProgressContext);
+  const {userDispatch} = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState([]);
 
@@ -21,13 +23,17 @@ const GoogleButton = () => {
     });
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function onAuthStateChanged(user) {
     setUserInfo(user);
-    console.log(user);
     if (user) {
       setLoggedIn(true);
+      userDispatch(user);
+    } else {
+      setLoggedIn(false);
+      userDispatch({});
     }
   }
 
@@ -35,6 +41,7 @@ const GoogleButton = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const {accessToken, idToken} = await GoogleSignin.signIn();
+      spinner.start();
       setLoggedIn(true);
       const credential = auth.GoogleAuthProvider.credential(
         idToken,
@@ -52,32 +59,37 @@ const GoogleButton = () => {
         Alert.alert('PLAY_SERVICES_NOT_AVAILABLE');
         // play services not available or outdated
       }
+    } finally {
+      spinner.stop();
     }
   };
-  const signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      auth()
-        .signOut()
-        .then(() => Alert.alert('Your are signed out!'));
-      setLoggedIn(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
   return (
     <>
       <GoogleSigninButton
-        style={{width: '100%', height: 48}}
+        style={{
+          width: '100%',
+          height: 50,
+        }}
         size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
+        color={GoogleSigninButton.Color.Light}
         onPress={_signIn}
       />
-      {!loggedIn && <Text>You are currently logged out</Text>}
-      {loggedIn && <Button onPress={signOut} title="LogOut" />}
+
+      {/* {loggedIn && <Button onPress={signOut} title="Google LogOut" />} */}
     </>
   );
 };
 
+const signOut = async () => {
+  try {
+    await GoogleSignin.revokeAccess();
+    await GoogleSignin.signOut();
+    auth().signOut();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export default GoogleButton;
+export {signOut};

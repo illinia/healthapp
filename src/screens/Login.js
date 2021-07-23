@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
+import {ProgressContext, UserContext} from '../context';
 import {Image, Input, Button} from '../components';
 import {images} from '../utils/images';
 import styled from 'styled-components/native';
@@ -6,6 +7,8 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {validateEmail, removeWhitespace} from '../utils/common';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import GoogleButton from '../utils/googleButton';
+import {Alert} from 'react-native';
+import {login} from '../utils/firebase';
 
 const Container = styled.View`
   flex: 1;
@@ -26,9 +29,9 @@ const ErrorText = styled.Text`
   color: ${({theme}) => theme.errorText};
 `;
 
-const _handleLoginButtonPress = () => {};
-
 const Login = ({navigation}) => {
+  const {userDispatch} = useContext(UserContext);
+  const {spinner} = useContext(ProgressContext);
   const insets = useSafeAreaInsets();
   const passwordRef = useRef();
 
@@ -41,15 +44,27 @@ const Login = ({navigation}) => {
     setDisabled(!(email && password && !errorMessage));
   }, [email, password, errorMessage]);
 
-  const _handleEmailChange = email => {
-    const changedEmail = removeWhitespace(email);
+  const _handleEmailChange = value => {
+    const changedEmail = removeWhitespace(value);
     setEmail(changedEmail);
     setErrorMessage(
       validateEmail(changedEmail) ? '' : 'Please check ur email.',
     );
   };
-  const _handlePasswordChange = password => {
-    setPassword(removeWhitespace(password));
+  const _handlePasswordChange = value => {
+    setPassword(removeWhitespace(value));
+  };
+
+  const _handleLoginButtonPress = async () => {
+    try {
+      spinner.start();
+      const user = await login({email, password});
+      userDispatch(user);
+    } catch (e) {
+      Alert.alert('Login Error', e.message);
+    } finally {
+      spinner.stop();
+    }
   };
 
   return (
@@ -78,6 +93,7 @@ const Login = ({navigation}) => {
           isPassword
         />
         <ErrorText>{errorMessage}</ErrorText>
+        <GoogleButton />
         <Button
           title="Login"
           onPress={_handleLoginButtonPress}
@@ -87,8 +103,8 @@ const Login = ({navigation}) => {
           title="Sign up with email"
           onPress={() => navigation.navigate('Signup')}
           isFilled={false}
+          isWhite
         />
-        <GoogleButton />
       </Container>
     </KeyboardAwareScrollView>
   );

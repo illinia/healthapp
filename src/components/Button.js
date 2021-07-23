@@ -5,31 +5,41 @@ import PropTypes from 'prop-types';
 const TRANSPARENT = 'transparent';
 
 const Container = styled.Pressable`
-  background-color: ${({ theme, isFilled }) =>
+  background-color: ${({theme, isFilled}) =>
     isFilled ? theme.buttonBackground : TRANSPARENT};
   align-items: center;
   border-radius: 4px;
-  width: 100%;
-  padding: 10px;
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  border: ${({isWhite, theme}) =>
+    !isWhite ? 'none' : '1px solid ' + theme.buttonBorder};
+  width: 98%;
+  opacity: ${({disabled}) => (disabled ? 0.5 : 1)};
+  margin-top: 15px;
 `;
 
 const Title = styled.Text`
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
   font-size: 16px;
-  color: ${({ theme, isFilled }) =>
+  font-weight: 700;
+  color: ${({theme, isFilled}) =>
     isFilled ? theme.buttonTitle : theme.buttonUnfilledTitle};
 `;
 
-const Button = ({ containerStyle, title, onPress, isFilled, disabled }) => {
+const Button = ({
+  isWhite,
+  containerStyle,
+  title,
+  onPress,
+  isFilled,
+  disabled,
+}) => {
   return (
     <Container
       style={containerStyle}
       onPress={onPress}
       isFilled={isFilled}
       disabled={disabled}
-    >
+      isWhite={isWhite}>
       <Title isFilled={isFilled}>{title}</Title>
     </Container>
   );
@@ -37,9 +47,11 @@ const Button = ({ containerStyle, title, onPress, isFilled, disabled }) => {
 
 Button.defaultProps = {
   isFilled: true,
+  isWhite: false,
 };
 
 Button.propTypes = {
+  isWhite: PropTypes.bool,
   containerStyle: PropTypes.object,
   title: PropTypes.string,
   onPress: PropTypes.func.isRequired,

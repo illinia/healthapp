@@ -48,11 +48,9 @@ const PhotoButton = ({onPress}) => {
 
 const Images = ({url, imageStyle, rounded, showButton, onChangeImage}) => {
   const options = {
-    title: 'test',
     mediaType: 'photo',
-    maxWidth: 100,
-    maxHeight: 100,
-    // includeBase64: true,
+    maxWidth: 200,
+    maxHeight: 200,
   };
 
   const _handleEditButton = async () => {

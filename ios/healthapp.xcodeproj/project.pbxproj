@@ -14,6 +14,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E0B73F7989474FFD6270E2D8 /* libPods-healthapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54BA001229BF6A64C62E3D07 /* libPods-healthapp.a */; };
 		E7A041A70DEF60E68F5F67F2 /* libPods-healthapp-healthappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFCB74938D891995C73E1C3E /* libPods-healthapp-healthappTests.a */; };
+		F85B399026AABE6C00194513 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F85B398F26AABE6C00194513 /* SplashScreen.storyboard */; };
 		F8ECEFC926A817D600A22BB8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8ECEFC826A817D600A22BB8 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		D56DB2220D85E08705E4C79A /* Pods-healthapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-healthapp.release.xcconfig"; path = "Target Support Files/Pods-healthapp/Pods-healthapp.release.xcconfig"; sourceTree = "<group>"; };
 		DFCB74938D891995C73E1C3E /* libPods-healthapp-healthappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-healthapp-healthappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F85B398F26AABE6C00194513 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		F8ECEFC826A817D600A22BB8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,6 +132,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				F85B398F26AABE6C00194513 /* SplashScreen.storyboard */,
 				13B07FAE1A68108700A75B9A /* healthapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* healthappTests */,
@@ -233,7 +236,7 @@
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			packageReferences = (
-				F8ECEFCA26A8215C00A22BB8 /* RemoteSwiftPackageReference */,
+				F8ECEFCA26A8215C00A22BB8 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
@@ -258,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				F85B399026AABE6C00194513 /* SplashScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				F8ECEFC926A817D600A22BB8 /* GoogleService-Info.plist in Resources */,
 			);
@@ -718,7 +722,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F8ECEFCA26A8215C00A22BB8 /* RemoteSwiftPackageReference */ = {
+		F8ECEFCA26A8215C00A22BB8 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
 			requirement = {

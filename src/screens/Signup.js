@@ -1,11 +1,12 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useContext} from 'react';
+import {ProgressContext, UserContext} from '../context';
 import styled from 'styled-components/native';
-import {Imgae} from 'react-native';
+import {Alert} from 'react-native';
 import {Image, Input, Button} from '../components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {validateEmail, removeWhitespace} from '../utils/common';
-import {Colors} from 'react-native-paper';
 import {images} from '../utils/images';
+import {signup} from '../utils/firebase';
 
 const Container = styled.View`
   flex: 1;
@@ -25,6 +26,8 @@ const ErrorText = styled.Text`
 `;
 
 const Signup = () => {
+  const {userDispatch} = useContext(UserContext);
+  const {spinner} = useContext(ProgressContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -64,7 +67,17 @@ const Signup = () => {
     );
   }, [name, email, password, passwordConfirm, errorMessage]);
 
-  const _handleSignupButtonPress = () => {};
+  const _handleSignupButtonPress = async () => {
+    try {
+      spinner.start();
+      const user = await signup({email, password, name, photoUrl});
+      userDispatch(user);
+    } catch (e) {
+      Alert.alert('Singup Error', e.message);
+    } finally {
+      spinner.stop();
+    }
+  };
 
   return (
     <KeyboardAwareScrollView extraScrollHeight={40}>
@@ -74,10 +87,6 @@ const Signup = () => {
           url={photoUrl}
           showButton
           onChangeImage={url => setPhotoUrl(url)}
-          imageStyle={{
-            width: 100,
-            height: 100,
-          }}
         />
         <Input
           label="Name"
