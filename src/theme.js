@@ -16,8 +16,8 @@ export const theme = {
   buttonUnfilledTitle: Colors.grey500,
   buttonBorder: Colors.grey400,
   headerTintColor: Colors.black,
-  tabActiveColor: Colors.blue500,
-  tabInactiveColor: Color(Colors.blue500).alpha(0.5).lighten(0.5).string(),
+  tabActiveColor: Colors.grey700,
+  tabInactiveColor: Color(Colors.grey700).alpha(0.6).lighten(0.4).string(),
   spinnerBackground: Colors.black,
   spinnerIndicator: Colors.white,
 };

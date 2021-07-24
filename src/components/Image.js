@@ -63,6 +63,7 @@ const Images = ({url, imageStyle, rounded, showButton, onChangeImage}) => {
         console.log('User tapped custom button: ', response.customButton);
         Alert.alert(response.customButton);
       } else {
+        console.log(response.assets[0].uri);
         onChangeImage(response.assets[0].uri);
       }
     });

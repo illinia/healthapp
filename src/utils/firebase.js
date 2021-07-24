@@ -1,7 +1,8 @@
 import * as firebase from 'firebase';
+import React from 'react';
 import config from '../../firebase.json';
 
-const app = firebase.initializeApp(config);
+export const app = firebase.initializeApp(config);
 
 const Auth = app.auth();
 
@@ -22,7 +23,8 @@ export const signup = async ({email, password, name, photoUrl}) => {
   return user;
 };
 
-const uploadImage = async uri => {
+const uploadImage = async url => {
+  const user = Auth.currentUser;
   const blob = await new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
@@ -32,13 +34,10 @@ const uploadImage = async uri => {
       reject(new TypeError('Network request failed'));
     };
     xhr.responseType = 'blob';
-    xhr.open('GET', uri, true);
+    xhr.open('GET', url, true);
     xhr.send(null);
   });
-
-  const user = Auth.currentUser;
   const ref = app.storage().ref(`/profiles/${user.uid}/photo.png`);
-  console.log(ref);
   const snapshot = await ref.put(blob, {contentType: 'image/png'});
 
   blob.close();
@@ -47,4 +46,25 @@ const uploadImage = async uri => {
 
 export const logout = async () => {
   return await Auth.signOut();
+};
+
+// export const getCurrentUser = () => {
+//   const {uid, displayName, email, photoURL} = Auth.currentUser;
+//   return {uid, name: displayName, email, photoUrl: photoURL};
+// };
+
+export const UpdateUserPhoto = async url => {
+  // const user = await Auth.onAuthStateChanged(value => {
+  //   if (value) {
+  //     console.log('signin');
+  //   } else {
+  //     console.log('signout');
+  //   }
+  // });
+  const user = Auth.currentUser;
+  console.log(user);
+  const storageUrl = url.startsWith('https') ? url : await uploadImage(url);
+  console.log('storageurl', storageUrl);
+  await user.updateProfile({photoURL: storageUrl});
+  return {photoUrl: user.photoURL};
 };

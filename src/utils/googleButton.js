@@ -1,9 +1,9 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
-} from 'react-native-google-signin';
+} from '@react-native-google-signin/google-signin';
 import {Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {UserContext, ProgressContext} from '../context';
@@ -11,8 +11,6 @@ import {UserContext, ProgressContext} from '../context';
 const GoogleButton = () => {
   const {spinner} = useContext(ProgressContext);
   const {userDispatch} = useContext(UserContext);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState([]);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -27,12 +25,9 @@ const GoogleButton = () => {
   }, []);
 
   function onAuthStateChanged(user) {
-    setUserInfo(user);
     if (user) {
-      setLoggedIn(true);
       userDispatch(user);
     } else {
-      setLoggedIn(false);
       userDispatch({});
     }
   }
@@ -42,7 +37,6 @@ const GoogleButton = () => {
       await GoogleSignin.hasPlayServices();
       const {accessToken, idToken} = await GoogleSignin.signIn();
       spinner.start();
-      setLoggedIn(true);
       const credential = auth.GoogleAuthProvider.credential(
         idToken,
         accessToken,
@@ -67,6 +61,7 @@ const GoogleButton = () => {
   return (
     <>
       <GoogleSigninButton
+        // eslint-disable-next-line react-native/no-inline-styles
         style={{
           width: '100%',
           height: 50,

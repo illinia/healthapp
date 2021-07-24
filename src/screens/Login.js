@@ -93,7 +93,6 @@ const Login = ({navigation}) => {
           isPassword
         />
         <ErrorText>{errorMessage}</ErrorText>
-        <GoogleButton />
         <Button
           title="Login"
           onPress={_handleLoginButtonPress}
@@ -105,6 +104,7 @@ const Login = ({navigation}) => {
           isFilled={false}
           isWhite
         />
+        <GoogleButton />
       </Container>
     </KeyboardAwareScrollView>
   );
