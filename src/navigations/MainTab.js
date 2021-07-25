@@ -1,39 +1,31 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Calculater, Profile} from '../screens';
+import {Calculator, Profile, SNS, Chat} from '../screens';
 import {ThemeContext} from 'styled-components/native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import SNS from '../screens/SNS';
-import Chat from '../screens/Chat';
 
 const Tab = createBottomTabNavigator();
 
-// const TabBarIcon = ({focused, name}) => {
-//   const theme = useContext(ThemeContext);
-//   return (
-//     <Icon
-//       name={name}
-//       size={26}
-//       color={focused ? theme.tabActiveColor : theme.tabInactiveColor}
-//     />
-//   );
-// };
-
-const MainTab = () => {
+const MainTab = ({navigation, route}) => {
   const theme = useContext(ThemeContext);
 
+  useEffect(() => {
+    const titles = route.state?.routeNames || ['Calculator'];
+    const index = route.state?.index || 0;
+    navigation.setOptions({headerTitle: titles[index]});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route]);
   return (
     <Tab.Navigator
+      initialRouteName="Calculator"
       tabBarOptions={{
         activeTintColor: theme.tabActiveColor,
         inactiveTintColor: theme.tabInactiveColor,
         style: {
-          // height: '12%',
           paddingTop: '2%',
         },
-        // showLabel: false,
       }}>
       <Tab.Screen
         name="SNS"
@@ -62,8 +54,8 @@ const MainTab = () => {
         }}
       />
       <Tab.Screen
-        name="Calculater"
-        component={Calculater}
+        name="Calculator"
+        component={Calculator}
         options={{
           tabBarIcon: ({focused}) => (
             <AntIcon

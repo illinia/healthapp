@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {PlatformColor, Alert} from 'react-native';
+import React from 'react';
+import {Alert} from 'react-native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import PropTypes from 'prop-types';
-import {Colors} from 'react-native-paper';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 

@@ -11,9 +11,9 @@ const Container = styled.Pressable`
   border-radius: 4px;
   border: ${({isWhite, theme}) =>
     !isWhite ? 'none' : '1px solid ' + theme.buttonBorder};
-  width: 98%;
+  width: 100%;
   opacity: ${({disabled}) => (disabled ? 0.5 : 1)};
-  margin-bottom: 15px;
+  margin-bottom: 15;
 `;
 
 const Title = styled.Text`

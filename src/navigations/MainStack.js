@@ -1,8 +1,9 @@
 import React, {useContext} from 'react';
 import {ThemeContext} from 'styled-components/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Calculater, MealPlanner} from '../screens';
 import MainTab from './MainTab';
+import {DetailMeal, MealPlanner} from '../screens';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Stack = createStackNavigator();
 
@@ -19,8 +20,8 @@ const MainStack = () => {
         headerBackTitleVisible: false,
       }}>
       <Stack.Screen name="Main" component={MainTab} />
-      <Stack.Screen name="Calculater" component={Calculater} />
       <Stack.Screen name="MealPlanner" component={MealPlanner} />
+      <Stack.Screen name="DetailMeal" component={DetailMeal} />
     </Stack.Navigator>
   );
 };

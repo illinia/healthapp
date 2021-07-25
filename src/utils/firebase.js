@@ -48,23 +48,16 @@ export const logout = async () => {
   return await Auth.signOut();
 };
 
-// export const getCurrentUser = () => {
-//   const {uid, displayName, email, photoURL} = Auth.currentUser;
-//   return {uid, name: displayName, email, photoUrl: photoURL};
-// };
+export const getCurrentUser = () => {
+  const {uid, displayName, email, photoURL} = Auth.currentUser;
+  return {uid, name: displayName, email, photoUrl: photoURL};
+};
 
-export const UpdateUserPhoto = async url => {
-  // const user = await Auth.onAuthStateChanged(value => {
-  //   if (value) {
-  //     console.log('signin');
-  //   } else {
-  //     console.log('signout');
-  //   }
-  // });
+export const updateUserPhoto = async photoUrl => {
   const user = Auth.currentUser;
-  console.log(user);
-  const storageUrl = url.startsWith('https') ? url : await uploadImage(url);
-  console.log('storageurl', storageUrl);
+  const storageUrl = photoUrl.startsWith('https')
+    ? photoUrl
+    : await uploadImage(photoUrl);
   await user.updateProfile({photoURL: storageUrl});
-  return {photoUrl: user.photoURL};
+  return {name: user.displayName, email: user.email, photoUrl: user.photoURL};
 };

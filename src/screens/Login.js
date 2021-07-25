@@ -6,7 +6,6 @@ import styled from 'styled-components/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {validateEmail, removeWhitespace} from '../utils/common';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import GoogleButton from '../utils/googleButton';
 import {Alert} from 'react-native';
 import {login} from '../utils/firebase';
 
@@ -104,7 +103,7 @@ const Login = ({navigation}) => {
           isFilled={false}
           isWhite
         />
-        <GoogleButton />
+        {/* <GoogleButton /> */}
       </Container>
     </KeyboardAwareScrollView>
   );
