@@ -1,7 +1,7 @@
 import React, {useLayoutEffect} from 'react';
 import styled from 'styled-components/native';
-import Apple from '../assets/Apple.png';
 import FoodImage from '../components/FoodImage';
+import Apple from '../assets/Apple.png';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const Container = styled.ScrollView`
@@ -18,7 +18,7 @@ const ImageView = styled.View`
   justify-content: space-around;
 `;
 
-const MealPlanner = ({navigation, route}) => {
+const DetailFood = ({navigation, route}) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: ({onPress}) => (
@@ -33,8 +33,11 @@ const MealPlanner = ({navigation, route}) => {
     });
   });
 
-  const onPress = () => {
-    navigation.navigate('DetailFood', route.params);
+  const onPress = title => {
+    navigation.navigate('DetailInfo', {
+      mealName: route.params,
+      foodName: title,
+    });
   };
   return (
     <Container
@@ -42,8 +45,8 @@ const MealPlanner = ({navigation, route}) => {
         alignItems: 'center',
       }}>
       <ImageView>
-        <FoodImage source={Apple} title="Fruit" onPress={onPress} />
-        <FoodImage source={Apple} title="Fruit" onPress={onPress} />
+        <FoodImage source={Apple} title="Apple" onPress={onPress} />
+        <FoodImage source={Apple} title="Banana" onPress={onPress} />
       </ImageView>
       <ImageView>
         <FoodImage source={Apple} title="Fruit" onPress={onPress} />
@@ -57,4 +60,4 @@ const MealPlanner = ({navigation, route}) => {
   );
 };
 
-export default MealPlanner;
+export default DetailFood;

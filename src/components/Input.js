@@ -79,6 +79,7 @@ Input.defaultProps = {
   onBlur: () => {},
   onChangeText: () => {},
   onSubmitEditing: () => {},
+  ref: '',
 };
 
 Input.propTypes = {

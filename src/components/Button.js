@@ -13,7 +13,7 @@ const Container = styled.Pressable`
     !isWhite ? 'none' : '1px solid ' + theme.buttonBorder};
   width: 100%;
   opacity: ${({disabled}) => (disabled ? 0.5 : 1)};
-  margin-bottom: 15;
+  margin-bottom: 15px;
 `;
 
 const Title = styled.Text`

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {Button, MealBox} from '../components';
 
@@ -9,24 +9,66 @@ const Container = styled.View`
   padding-top: 20px;
 `;
 
-const Calculator = ({navigation}) => {
+const Calculator = ({navigation, route}) => {
   const [meals, setMeals] = useState({
-    1: {id: '1', name: 'Breakfast', cal: '123cal'},
-    2: {id: '2', name: 'Lunch', cal: '333cal'},
-    3: {id: '3', name: 'Dinner', cal: '879cal'},
+    breakfast: {
+      name: 'breakfast',
+      meal: [{Apple: 50}, {Banana: 100}, {Orange: 70}],
+    },
+    lunch: {
+      name: 'lunch',
+      meal: [{Apple: 50}, {Banana: 100}, {Orange: 70}],
+    },
   });
 
-  const _addMeals = () => {
-    setMeals([...meals]);
+  const _addMeal = (name, meal) => {
+    const newMeal = {[name]: {name: name, meal: [meal]}};
+    if (meals[name]) {
+      const newMeals = meals[name].meal;
+      newMeals.push(meal);
+      setMeals({
+        ...meals,
+        ...{
+          [name]: {
+            name: name,
+            meal: [...newMeals],
+          },
+        },
+      });
+    } else {
+      setMeals({...meals, ...newMeal});
+    }
   };
+
+  useEffect(() => {
+    if (route.params) {
+      const mealName = route.params.mealName;
+      const foodName = route.params.foodName;
+      const calories = +route.params.calories;
+      _addMeal(mealName, {[foodName]: calories});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route.params]);
 
   return (
     <Container>
       {Object.values(meals)
         .reverse()
-        .map(item => (
-          <MealBox item={item} navigation={navigation} />
-        ))}
+        .map(item => {
+          let cal = 0;
+          item.meal.forEach(value => {
+            cal += Number(Object.values(value));
+          });
+          cal += ' cal';
+          return (
+            <MealBox
+              name={item.name}
+              cal={cal}
+              keyId={item.name}
+              onPress={() => navigation.navigate('DetailMeal', item)}
+            />
+          );
+        })}
       <Button
         title="+ Add Meals!"
         containerStyle={{width: '90%', marginTop: 30}}

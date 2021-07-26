@@ -6,5 +6,18 @@ import Profile from './Profile';
 import SNS from './SNS';
 import Chat from './Chat';
 import DetailMeal from './DetailMeal';
+import DetailFood from './DetailFood';
+import DetailInfo from './DetailInfo';
 
-export {Login, Signup, Calculator, MealPlanner, Profile, SNS, Chat, DetailMeal};
+export {
+  Login,
+  Signup,
+  Calculator,
+  MealPlanner,
+  Profile,
+  SNS,
+  Chat,
+  DetailMeal,
+  DetailFood,
+  DetailInfo,
+};

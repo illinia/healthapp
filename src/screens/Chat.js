@@ -7,7 +7,7 @@ const Container = styled.View`
   background-color: ${({theme}) => theme.background};
 `;
 
-const Chat = ({navigation}) => {
+const Chat = ({navigation, route}) => {
   return (
     <Container>
       <Text style={{fontSize: 24}}>Chat</Text>

@@ -29,7 +29,7 @@ const StyledText = styled.Text`
   font-size: 20px;
 `;
 
-const FoodImage = ({source, title}) => {
+const FoodImage = ({source, title, onPress}) => {
   return (
     <Container
       style={{
@@ -38,17 +38,20 @@ const FoodImage = ({source, title}) => {
         shadowOpacity: 0.2,
       }}>
       <StyledImage source={source} />
-      <ButtonContainer onPress={() => Alert.alert('test')} />
+      <ButtonContainer onPress={() => onPress(title)} />
       <StyledText>{title}</StyledText>
     </Container>
   );
 };
 
-FoodImage.defaultProps = {};
+FoodImage.defaultProps = {
+  onPress: () => {},
+};
 
 FoodImage.propTypes = {
   uri: PropTypes.string,
   imageStyle: PropTypes.object,
+  onPress: PropTypes.func,
 };
 
 export default FoodImage;
