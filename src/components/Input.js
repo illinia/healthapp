@@ -41,6 +41,7 @@ const Input = forwardRef(
       returnKeyType,
       maxLength,
       disabled,
+      inputStyle,
     },
     ref,
   ) => {
@@ -69,6 +70,7 @@ const Input = forwardRef(
           textContentType="none"
           underlineColorAndroid="transparent"
           editable={!disabled}
+          style={inputStyle}
         />
       </Container>
     );
@@ -80,6 +82,7 @@ Input.defaultProps = {
   onChangeText: () => {},
   onSubmitEditing: () => {},
   ref: '',
+  inputStyle: {},
 };
 
 Input.propTypes = {
@@ -93,6 +96,7 @@ Input.propTypes = {
   returnKeyType: PropTypes.oneOf(['done', 'next']),
   maxLength: PropTypes.number,
   disabled: PropTypes.bool,
+  inputStyle: PropTypes.object,
 };
 
 export default Input;

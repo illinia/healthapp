@@ -4,6 +4,7 @@ import Color from 'color';
 export const theme = {
   background: Colors.white,
   text: Colors.black,
+  errorText: Colors.red700,
   imageBackground: Colors.grey300,
   imageButtonBackground: Colors.grey500,
   imageButtonIcon: Colors.white,
@@ -11,7 +12,6 @@ export const theme = {
   inputPlaceholder: Colors.grey500,
   inputBorder: Colors.grey500,
   inputDisabledBackground: Colors.grey300,
-  errorText: Colors.red700,
   buttonBackground: Colors.blue400,
   buttonTitle: Colors.white,
   buttonUnfilledTitle: Colors.grey500,

@@ -1,4 +1,4 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useLayoutEffect, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {Text} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -30,13 +30,18 @@ const DetailMeal = ({navigation, route}) => {
           size={30}
           style={{marginRight: 15}}
           color="black"
-          onPress={() => navigation.navigate('MealPlanner', route.params.name)}
+          onPress={() =>
+            navigation.navigate('MealPlanner', route.params.item.name)
+          }
         />
       ),
     });
   });
-  const foodList = route.params.meal.map(value => Object.keys(value));
-  const calList = route.params.meal.map(value => Object.values(value));
+
+  const foodList = route.params.item.meal.map(value =>
+    Object.keys(value).toString(),
+  );
+  const calList = route.params.item.meal.map(value => Object.values(value));
   const totalCal =
     calList.reduce((prev, curr) => Number(prev) + Number(curr), 0) + ' cal';
 
@@ -44,15 +49,26 @@ const DetailMeal = ({navigation, route}) => {
     <Container>
       <MealBox
         key={0}
-        name="Total Calories"
+        itemName="Total Calories"
         cal={totalCal}
+        canUpdate={false}
         style={{
           marginBottom: 50,
         }}
       />
       {foodList.map((value, index) => {
         return (
-          <MealBox key={index + 1} name={value} cal={`${calList[index]} cal`} />
+          <MealBox
+            key={index + 1}
+            itemName={value}
+            itemCal={calList[index]}
+            item={route.params.item}
+            deleteFood={route.params.deleteFood}
+            updateFood={route.params.updateFood}
+            foodIndex={index}
+            cal={`${calList[index]} cal`}
+            inputStyle={{width: '40%'}}
+          />
         );
       })}
     </Container>

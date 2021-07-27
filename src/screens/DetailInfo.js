@@ -1,12 +1,18 @@
-import React, {useState, useRef, useContext, useLayoutEffect} from 'react';
+import React, {
+  useState,
+  useRef,
+  useContext,
+  useLayoutEffect,
+  useEffect,
+} from 'react';
 import styled from 'styled-components/native';
 import FoodImage from '../components/FoodImage';
 import Apple from '../assets/Apple.png';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Button, Input} from '../components';
 import {ThemeContext} from 'styled-components/native';
-import {Alert} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {checkNumber, checkTrim, removeWhitespace} from '../utils/common';
 
 const Container = styled.View`
   align-self: center;
@@ -14,6 +20,11 @@ const Container = styled.View`
   padding-top: 30px;
   width: 60%;
   background-color: ${({theme}) => theme.background};
+`;
+
+const ErrorText = styled.Text`
+  width: 100%;
+  color: ${({theme}) => theme.errorText};
 `;
 
 const DetailInfo = ({navigation, route}) => {
@@ -30,19 +41,56 @@ const DetailInfo = ({navigation, route}) => {
       ),
     });
   });
+
   const theme = useContext(ThemeContext);
+  const [disabled, setDisabled] = useState(true);
   const [mealName, setMealName] = useState(route.params?.mealName);
+  const [mealError, setMealError] = useState('');
   const [foodName, setFoodName] = useState(route.params?.foodName);
+  const [foodError, setFoodError] = useState('');
   const [calories, setCalories] = useState('');
+  const [error, setError] = useState('');
   const foodRef = useRef();
   const caloriesRef = useRef();
 
+  useEffect(() => {
+    setDisabled(
+      !(mealName && foodName && calories && !mealError && !foodError && !error),
+    );
+  }, [mealName, foodName, calories, mealError, foodError, error]);
+
   const _buttonPressed = () => {
-    navigation.navigate('Calculator', {
-      mealName: mealName,
-      foodName: foodName,
-      calories: calories,
-    });
+    if (!disabled) {
+      navigation.navigate('Calculator', {
+        mealName: mealName,
+        foodName: foodName,
+        calories: calories,
+      });
+    }
+  };
+
+  const _handleMealName = name => {
+    setMealName(name);
+    setMealError(
+      checkTrim(name)
+        ? ''
+        : 'Please remove whitespace both sides of the name.\nand check is correct name.',
+    );
+  };
+
+  const _handleFoodName = name => {
+    setFoodName(name);
+    setFoodError(
+      checkTrim(name)
+        ? ''
+        : 'Please remove whitespace both sides of the name.\nand check is correct name.',
+    );
+  };
+
+  const _handleCalories = cal => {
+    const result = removeWhitespace(cal);
+    setCalories(result);
+    setError(checkNumber(result) ? '' : 'Please put only number in calories.');
   };
 
   return (
@@ -50,35 +98,40 @@ const DetailInfo = ({navigation, route}) => {
       contentContainerStyle={{
         flex: 1,
         backgroundColor: ({theme}) => theme.background,
-      }}>
+      }}
+      extraScrollHeight={100}
+      keyboardShouldPersistTaps="always">
       <Container>
         <FoodImage source={Apple} title="Fruit" />
         <Input
           label="Meal Name"
           value={mealName}
           onSubmitEditing={() => foodRef.current.focus()}
-          onChangeText={value => setMealName(value)}
-          placeholder="Enter Meal Name!"
+          onChangeText={_handleMealName}
+          placeholder="Special Dinner!"
           returnKeyType="next"
         />
+        {!!mealError && <ErrorText>{mealError}</ErrorText>}
         <Input
           ref={foodRef}
           label="Food Name"
           value={foodName}
           onSubmitEditing={() => caloriesRef.current.focus()}
-          onChangeText={value => setFoodName(value)}
-          placeholder="Enter Food Name!"
+          onChangeText={_handleFoodName}
+          placeholder="Yummy Food!"
           returnKeyType="next"
         />
+        {!!foodError && <ErrorText>{foodError}</ErrorText>}
         <Input
           ref={caloriesRef}
           label="Calories"
           value={calories}
           onSubmitEditing={_buttonPressed}
-          onChangeText={value => setCalories(value)}
-          placeholder="Enter Calories!"
+          onChangeText={_handleCalories}
+          placeholder="100"
           returnKeyType="done"
         />
+        <ErrorText>{error}</ErrorText>
         <Button
           containerStyle={{
             backgroundColor: theme.buttonLogout,
@@ -86,6 +139,7 @@ const DetailInfo = ({navigation, route}) => {
           }}
           title="Add Food"
           onPress={_buttonPressed}
+          disabled={disabled}
         />
       </Container>
     </KeyboardAwareScrollView>

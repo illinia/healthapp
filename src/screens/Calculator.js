@@ -40,6 +40,54 @@ const Calculator = ({navigation, route}) => {
     }
   };
 
+  const _deleteMeal = name => {
+    const currentList = {...meals};
+    delete currentList[name];
+    setMeals(currentList);
+  };
+
+  const _deleteFood = (name, index, item) => {
+    const currentList = {...meals};
+    currentList[name].meal.splice(index, 1);
+    setMeals({
+      ...currentList,
+    });
+    navigation.navigate('DetailMeal', {
+      item: item,
+      deleteFood: _deleteFood,
+      updateFood: _updateFood,
+    });
+  };
+
+  const _updateFood = (name, newName, newCal, index, item) => {
+    const currentList = {...meals};
+    delete currentList[name].meal[index];
+    currentList[name].meal.splice(index, 0, {[newName]: newCal});
+    setMeals({
+      ...currentList,
+    });
+    navigation.navigate('DetailMeal', {
+      item: item,
+      deleteFood: _deleteFood,
+      updateFood: _updateFood,
+    });
+  };
+
+  const _updateMeal = (name, newName) => {
+    const currentList = {...meals};
+    const newMeal = currentList[name].meal;
+    delete currentList[name];
+    setMeals({
+      ...currentList,
+      ...{
+        [newName]: {
+          name: newName,
+          meal: [...newMeal],
+        },
+      },
+    });
+  };
+
   useEffect(() => {
     if (route.params) {
       const mealName = route.params.mealName;
@@ -62,10 +110,18 @@ const Calculator = ({navigation, route}) => {
           cal += ' cal';
           return (
             <MealBox
-              name={item.name}
+              itemName={item.name}
               cal={cal}
-              keyId={item.name}
-              onPress={() => navigation.navigate('DetailMeal', item)}
+              key={item.name}
+              deleteMeal={_deleteMeal}
+              updateMeal={_updateMeal}
+              onPress={() =>
+                navigation.navigate('DetailMeal', {
+                  item: item,
+                  deleteFood: _deleteFood,
+                  updateFood: _updateFood,
+                })
+              }
             />
           );
         })}
