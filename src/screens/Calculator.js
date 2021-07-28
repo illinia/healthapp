@@ -1,27 +1,41 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import styled from 'styled-components/native';
 import {Button, MealBox} from '../components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ProgressContext} from '../context';
+import {createMeal, DB, getCurrentUser} from '../utils/firebase';
+import {Alert} from 'react-native';
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   flex: 1;
   background-color: ${({theme}) => theme.background};
-  align-items: center;
   padding-top: 20px;
 `;
 
 const Calculator = ({navigation, route}) => {
-  const [meals, setMeals] = useState({
-    breakfast: {
-      name: 'breakfast',
-      meal: [{Apple: 50}, {Banana: 100}, {Orange: 70}],
-    },
-    lunch: {
-      name: 'lunch',
-      meal: [{Apple: 50}, {Banana: 100}, {Orange: 70}],
-    },
-  });
+  const {spinner} = useContext(ProgressContext);
+  const [meals, setMeals] = useState({});
 
-  const _addMeal = (name, meal) => {
+  const _saveMeal = async value => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('@storageMeals', jsonValue);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const _loadMeal = async () => {
+    try {
+      await AsyncStorage.getItem('@storageMeals').then(response => {
+        setMeals(JSON.parse(response));
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const _addMeal = async (name, meal) => {
     const newMeal = {[name]: {name: name, meal: [meal]}};
     if (meals[name]) {
       const newMeals = meals[name].meal;
@@ -88,6 +102,16 @@ const Calculator = ({navigation, route}) => {
     });
   };
 
+  const _loadFirestore = () => {
+    const {uid} = getCurrentUser();
+    DB.collection('meals')
+      .doc(uid)
+      .get()
+      .then(doc => {
+        setMeals(doc.data().meals);
+      });
+  };
+
   useEffect(() => {
     if (route.params) {
       const mealName = route.params.mealName;
@@ -98,8 +122,21 @@ const Calculator = ({navigation, route}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route.params]);
 
+  useEffect(() => {
+    _loadMeal();
+    return _saveMeal(meals);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    _saveMeal(meals);
+  }, [meals]);
+
   return (
-    <Container>
+    <Container
+      contentContainerStyle={{
+        alignItems: 'center',
+      }}>
       {Object.values(meals)
         .reverse()
         .map(item => {
@@ -128,7 +165,36 @@ const Calculator = ({navigation, route}) => {
       <Button
         title="+ Add Meals!"
         containerStyle={{width: '90%', marginTop: 30}}
+        isFilled={false}
         onPress={() => navigation.navigate('MealPlanner')}
+      />
+      <Button
+        title="Save on Online"
+        containerStyle={{width: '90%'}}
+        isFilled={false}
+        isWhite
+        onPress={() => {
+          try {
+            createMeal(meals);
+            Alert.alert('Succeed Saving!');
+          } catch (e) {
+            console.log(e);
+            Alert.alert('Check ur Network Connection');
+          }
+        }}
+      />
+      <Button
+        title="Load from Online"
+        containerStyle={{width: '90%'}}
+        onPress={() => {
+          try {
+            _loadFirestore();
+            Alert.alert('Succeed Loading!');
+          } catch (e) {
+            console.log(e);
+            Alert.alert('Check ur Network Connection');
+          }
+        }}
       />
     </Container>
   );

@@ -80,7 +80,9 @@ const Signup = () => {
   };
 
   return (
-    <KeyboardAwareScrollView extraScrollHeight={40}>
+    <KeyboardAwareScrollView
+      extraScrollHeight={40}
+      keyboardShouldPersistTaps="always">
       <Container>
         <Image
           rounded

@@ -1,6 +1,6 @@
 import React, {useLayoutEffect} from 'react';
 import styled from 'styled-components/native';
-import Apple from '../assets/Apple.png';
+import {Apple, Beef, Bread, Drink, Cheese, Fish, Burger, Milk} from '../assets';
 import FoodImage from '../components/FoodImage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -33,8 +33,11 @@ const MealPlanner = ({navigation, route}) => {
     });
   });
 
-  const onPress = () => {
-    navigation.navigate('DetailFood', route.params);
+  const onPress = title => {
+    navigation.navigate('DetailFood', {
+      mealName: route.params,
+      selectedFood: title,
+    });
   };
   return (
     <Container
@@ -43,15 +46,19 @@ const MealPlanner = ({navigation, route}) => {
       }}>
       <ImageView>
         <FoodImage source={Apple} title="Fruit" onPress={onPress} />
-        <FoodImage source={Apple} title="Fruit" onPress={onPress} />
+        <FoodImage source={Beef} title="Meat" onPress={onPress} />
       </ImageView>
       <ImageView>
-        <FoodImage source={Apple} title="Fruit" onPress={onPress} />
-        <FoodImage source={Apple} title="Fruit" onPress={onPress} />
+        <FoodImage source={Bread} title="Bread" onPress={onPress} />
+        <FoodImage source={Drink} title="Drink" onPress={onPress} />
       </ImageView>
       <ImageView>
-        <FoodImage source={Apple} title="Fruit" onPress={onPress} />
-        <FoodImage source={Apple} title="Fruit" onPress={onPress} />
+        <FoodImage source={Cheese} title="Cheese" onPress={onPress} />
+        <FoodImage source={Fish} title="Fish" onPress={onPress} />
+      </ImageView>
+      <ImageView>
+        <FoodImage source={Burger} title="Instant" onPress={onPress} />
+        <FoodImage source={Milk} title="Milk" onPress={onPress} />
       </ImageView>
     </Container>
   );

@@ -70,7 +70,8 @@ const Login = ({navigation}) => {
     <KeyboardAwareScrollView
       // eslint-disable-next-line react-native/no-inline-styles
       contentContainerStyle={{flex: 1}}
-      extraScrollHeight={80}>
+      extraScrollHeight={80}
+      keyboardShouldPersistTaps="always">
       <Container insets={insets}>
         <Image url={images.logo} />
         <Input

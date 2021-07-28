@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
-import React from 'react';
 import config from '../../firebase.json';
+import 'firebase/firestore';
 
 export const app = firebase.initializeApp(config);
 
@@ -60,4 +60,17 @@ export const updateUserPhoto = async photoUrl => {
     : await uploadImage(photoUrl);
   await user.updateProfile({photoURL: storageUrl});
   return {name: user.displayName, email: user.email, photoUrl: user.photoURL};
+};
+
+export const DB = firebase.firestore();
+
+export const createMeal = async meals => {
+  const {uid} = getCurrentUser();
+  const newMeal = {
+    id: uid,
+    meals: meals,
+    createdAt: Date.now(),
+  };
+  await DB.collection('meals').doc(uid).set(newMeal);
+  return uid;
 };

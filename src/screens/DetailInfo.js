@@ -5,14 +5,13 @@ import React, {
   useLayoutEffect,
   useEffect,
 } from 'react';
-import styled from 'styled-components/native';
+import styled, {ThemeContext} from 'styled-components/native';
 import FoodImage from '../components/FoodImage';
-import Apple from '../assets/Apple.png';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Button, Input} from '../components';
-import {ThemeContext} from 'styled-components/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {checkNumber, checkTrim, removeWhitespace} from '../utils/common';
+import * as icons from '../assets';
 
 const Container = styled.View`
   align-self: center;
@@ -102,7 +101,10 @@ const DetailInfo = ({navigation, route}) => {
       extraScrollHeight={100}
       keyboardShouldPersistTaps="always">
       <Container>
-        <FoodImage source={Apple} title="Fruit" />
+        <FoodImage
+          source={icons[route.params.foodName]}
+          title={route.params.foodName}
+        />
         <Input
           label="Meal Name"
           value={mealName}

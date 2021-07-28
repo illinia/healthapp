@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {Alert} from 'react-native';
+import {checkNumber, checkTrim} from '../utils/common';
 
 const Container = styled.View`
   width: 90%;
   height: 50px;
   margin-vertical: 5px;
+  margin-bottom: ${({error}) => (error ? '50px' : 0)};
 `;
 
 const BoxContainer = styled.TouchableOpacity.attrs({
@@ -35,6 +37,13 @@ const MealInput = styled.TextInput`
   font-size: 18px;
 `;
 
+const ErrorText = styled.Text`
+  width: 100%;
+  color: ${({theme}) => theme.errorText};
+  margin-top: 10px;
+  padding-horizontal: 10px;
+`;
+
 const MealBox = ({
   itemName,
   itemCal,
@@ -52,24 +61,47 @@ const MealBox = ({
 }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [newName, setNewName] = useState('');
-  const [newCal, setNewCal] = useState(0);
+  const [newCal, setNewCal] = useState('');
+  const [error, setError] = useState('');
 
   const calRef = useRef('');
 
   const _updateFood = () => {
-    updateFood(item.name, newName, newCal, foodIndex, item);
-    setIsUpdating(false);
-    Alert.alert(`${itemName} is updated!`);
+    if (newName && newCal && !error) {
+      updateFood(item.name, newName, newCal, foodIndex, item);
+      setIsUpdating(false);
+      Alert.alert(`${itemName} is updated!`);
+    } else {
+      Alert.alert('Please check again.');
+    }
   };
 
   const _updateMeal = () => {
-    updateMeal(itemName, newName);
-    setIsUpdating(false);
-    Alert.alert(`${itemName} is updated!`);
+    if (newName && !error) {
+      updateMeal(itemName, newName);
+      setIsUpdating(false);
+      Alert.alert(`${itemName} is updated!`);
+    } else {
+      Alert.alert('Please check again.');
+    }
+  };
+
+  const _setNewName = name => {
+    setNewName(name);
+    setError(
+      checkTrim(name)
+        ? ''
+        : 'Please remove whitespace both sides of the name.\nand check is correct name.',
+    );
+  };
+
+  const _setNewCal = name => {
+    setNewCal(name);
+    setError(checkNumber(name) ? '' : 'Please put only number in calories.');
   };
 
   return (
-    <Container style={style}>
+    <Container style={style} error={error}>
       {!isUpdating ? (
         <BoxContainer
           style={style}
@@ -87,7 +119,7 @@ const MealBox = ({
             <>
               <MealInput
                 style={inputStyle}
-                onChangeText={text => setNewName(text)}
+                onChangeText={_setNewName}
                 onSubmitEditing={() => calRef.current.focus()}
                 placeholder={itemName.toString()}
                 returnKeyType="next"
@@ -97,7 +129,7 @@ const MealBox = ({
               <MealInput
                 ref={calRef}
                 style={inputStyle}
-                onChangeText={text => setNewCal(text)}
+                onChangeText={_setNewCal}
                 onSubmitEditing={() => _updateFood()}
                 placeholder={`${itemCal.toString()} cal`}
                 returnKeyType="done"
@@ -108,7 +140,7 @@ const MealBox = ({
           ) : (
             <MealInput
               style={inputStyle}
-              onChangeText={text => setNewName(text)}
+              onChangeText={_setNewName}
               onSubmitEditing={() => _updateMeal()}
               placeholder={itemName.toString()}
               returnKeyType="done"
@@ -119,6 +151,9 @@ const MealBox = ({
           <EvilIcons
             name="pencil"
             size={40}
+            style={{
+              opacity: error ? 0.5 : 1,
+            }}
             onPress={() => (updateFood ? _updateFood() : _updateMeal())}
           />
           <Ionicons
@@ -138,6 +173,7 @@ const MealBox = ({
           />
         </BoxContainer>
       )}
+      {!!error && <ErrorText>{error}</ErrorText>}
     </Container>
   );
 };
@@ -149,7 +185,6 @@ MealBox.defaultProps = {
 };
 
 MealBox.propTypes = {
-  name: PropTypes.string.isRequired,
   cal: PropTypes.string.isRequired,
   onPress: PropTypes.func,
   style: PropTypes.object,
