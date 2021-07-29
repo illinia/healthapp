@@ -41,7 +41,7 @@
 	<string>HealthApp</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<!-- <key>NSAppTransportSecurity</key>
+	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
@@ -51,7 +51,7 @@
 				<true/>
 			</dict>
 		</dict>
-	</dict> -->
+	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>healthapp would like to use your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
