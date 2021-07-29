@@ -53,7 +53,7 @@ const Profile = () => {
         showButton
         rounded
       />
-      <Input label="Name" value={user.name} />
+      <Input label="Name" value={user.name} disabled />
       <Input label="Email" value={user.email} disabled />
       <Button
         title="logout"
@@ -61,6 +61,8 @@ const Profile = () => {
         containerStyle={{
           marginTop: 20,
           backgroundColor: theme.buttonLogout,
+          width: '100%',
+          borderRadius: 10,
         }}
       />
     </Container>

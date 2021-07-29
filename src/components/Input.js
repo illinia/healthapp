@@ -12,6 +12,7 @@ const Label = styled.Text`
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 6px;
+  padding-horizontal: 10px;
   color: ${({theme, isFocused}) => (isFocused ? theme.text : theme.label)};
 `;
 
@@ -25,7 +26,7 @@ const StyledTextInput = styled.TextInput.attrs(({theme}) => ({
   font-size: 16px;
   border: 1px solid
     ${({theme, isFocused}) => (isFocused ? theme.text : theme.inputBorder)};
-  border-radius: 4px;
+  border-radius: 10px;
 `;
 
 const Input = forwardRef(

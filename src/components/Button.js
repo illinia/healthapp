@@ -8,10 +8,9 @@ const Container = styled.Pressable`
   background-color: ${({theme, isFilled}) =>
     isFilled ? theme.buttonBackground : TRANSPARENT};
   align-items: center;
-  border-radius: 4px;
+
   border: ${({isWhite, theme}) =>
     !isWhite ? 'none' : '1px solid ' + theme.buttonBorder};
-  width: 100%;
   opacity: ${({disabled}) => (disabled ? 0.5 : 1)};
   margin-bottom: 15px;
 `;
@@ -48,6 +47,7 @@ const Button = ({
 Button.defaultProps = {
   isFilled: true,
   isWhite: false,
+  containerStyle: {width: '100%', borderRadius: 10},
 };
 
 Button.propTypes = {

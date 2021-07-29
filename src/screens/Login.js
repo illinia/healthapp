@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {validateEmail, removeWhitespace} from '../utils/common';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Alert} from 'react-native';
+import {Alert, Text} from 'react-native';
 import {login} from '../utils/firebase';
 
 const Container = styled.View`
@@ -26,6 +26,12 @@ const ErrorText = styled.Text`
   margin-bottom: 10px;
   line-height: 20px;
   color: ${({theme}) => theme.errorText};
+`;
+
+const ButtonBox = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const Login = ({navigation}) => {
@@ -70,7 +76,7 @@ const Login = ({navigation}) => {
     <KeyboardAwareScrollView
       // eslint-disable-next-line react-native/no-inline-styles
       contentContainerStyle={{flex: 1}}
-      extraScrollHeight={80}
+      extraScrollHeight={40}
       keyboardShouldPersistTaps="always">
       <Container insets={insets}>
         <Image url={images.logo} />
@@ -93,17 +99,27 @@ const Login = ({navigation}) => {
           isPassword
         />
         <ErrorText>{errorMessage}</ErrorText>
-        <Button
-          title="Login"
-          onPress={_handleLoginButtonPress}
-          disabled={disabled}
-        />
-        <Button
-          title="Sign up with email"
-          onPress={() => navigation.navigate('Signup')}
-          isFilled={false}
-          isWhite
-        />
+        <ButtonBox>
+          <Button
+            title="Login"
+            containerStyle={{
+              width: '47%',
+              borderRadius: 10,
+            }}
+            onPress={_handleLoginButtonPress}
+            disabled={disabled}
+          />
+          <Button
+            title="Sign up with email"
+            containerStyle={{
+              width: '47%',
+              borderRadius: 10,
+            }}
+            onPress={() => navigation.navigate('Signup')}
+            isFilled={false}
+            isWhite
+          />
+        </ButtonBox>
         {/* <GoogleButton /> */}
       </Container>
     </KeyboardAwareScrollView>

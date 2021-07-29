@@ -170,7 +170,7 @@ const Calculator = ({navigation, route}) => {
       />
       <Button
         title="Save on Online"
-        containerStyle={{width: '90%'}}
+        containerStyle={{width: '90%', borderRadius: 10}}
         isFilled={false}
         isWhite
         onPress={() => {
@@ -185,7 +185,7 @@ const Calculator = ({navigation, route}) => {
       />
       <Button
         title="Load from Online"
-        containerStyle={{width: '90%'}}
+        containerStyle={{width: '90%', borderRadius: 10}}
         onPress={() => {
           try {
             _loadFirestore();

@@ -25,6 +25,7 @@ const BoxContainer = styled.TouchableOpacity.attrs({
   align-items: center;
   padding-vertical: 10px;
   padding-horizontal: 20px;
+  overflow: hidden;
 `;
 
 const MealText = styled.Text`
@@ -35,6 +36,7 @@ const MealInput = styled.TextInput`
   width: 80%;
   height: 100%;
   font-size: 18px;
+  overflow: hidden;
 `;
 
 const ErrorText = styled.Text`
