@@ -136,6 +136,8 @@ const DetailInfo = ({navigation, route}) => {
         <ErrorText>{error}</ErrorText>
         <Button
           containerStyle={{
+            width: '100%',
+            borderRadius: 10,
             backgroundColor: theme.buttonLogout,
             marginTop: 10,
           }}

@@ -3,4 +3,5 @@ const prefix =
 
 export const images = {
   logo: `${prefix}/logo.png?alt=media`,
+  firstapp: `${prefix}/firstApp.png?alt=media`,
 };

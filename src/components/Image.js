@@ -8,7 +8,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const Container = styled.View`
   align-self: center;
-  margin-bottom: 30px;
 `;
 
 const StyledImage = styled.Image`
@@ -80,6 +79,7 @@ Images.defaultProps = {
   rounded: false,
   showButton: false,
   onChangeImage: () => {},
+  imageStyled: {marginBottom: 30},
 };
 
 Images.propTypes = {

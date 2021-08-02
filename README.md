@@ -1,14 +1,14 @@
 # Healthapp portfolio
 > Manage diet, share life, make friends
 
-![npm-image][]
-![release-image][]
-![react-image][]
-![reactnative-image][]
+![npm-image]
+![release-image]
+![react-image]
+![reactnative-image]
 
-![javascript-stack][]
-![reactnative-stack][]
-![firebase-stack][]
+![javascript-stack]
+![reactnative-stack]
+![firebase-stack]
 
 
 Many calculating apps are too much complicated.<br>
@@ -71,7 +71,7 @@ cd healthapp && npm run ios
 
 ## Meta
 * Developed by Taemin Kim
-* Email : ![gmail-link][] seolin1218@gmail.com
+* Email : ![gmail-link] seolin1218@gmail.com
 * Github : [![github-link]](https://github.com/illinia)
 * Designed by Irina
 

@@ -8,6 +8,9 @@ import Chat from './Chat';
 import DetailMeal from './DetailMeal';
 import DetailFood from './DetailFood';
 import DetailInfo from './DetailInfo';
+import SNSWritepost from './SNSWritepost';
+import SNSEditpost from './SNSEditpost';
+import SNSComment from './SNSComment';
 
 export {
   Login,
@@ -20,4 +23,7 @@ export {
   DetailMeal,
   DetailFood,
   DetailInfo,
+  SNSWritepost,
+  SNSEditpost,
+  SNSComment,
 };

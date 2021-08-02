@@ -1,16 +1,17 @@
-import React from 'react';
-import styled from 'styled-components/native';
-import {Text} from 'react-native';
+import React, {useContext} from 'react';
+import styled, {ThemeContext} from 'styled-components/native';
+import {Post} from '../components';
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   flex: 1;
   background-color: ${({theme}) => theme.background};
 `;
 
 const SNS = ({navigation}) => {
+  const theme = useContext(ThemeContext);
   return (
     <Container>
-      <Text style={{fontSize: 24}}>SNS</Text>
+      <Post />
     </Container>
   );
 };

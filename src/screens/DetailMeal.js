@@ -1,6 +1,5 @@
-import React, {useLayoutEffect, useEffect} from 'react';
+import React, {useLayoutEffect} from 'react';
 import styled from 'styled-components/native';
-import {Text} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {MealBox} from '../components';

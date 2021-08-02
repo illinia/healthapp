@@ -5,6 +5,8 @@ import {ThemeContext} from 'styled-components/native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,14 +14,26 @@ const MainTab = ({navigation, route}) => {
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
-    const titles = route.state?.routeNames || ['Calculator'];
+    const titles = route.state?.routeNames || ['SNS'];
     const index = route.state?.index || 0;
-    navigation.setOptions({headerTitle: titles[index]});
+    navigation.setOptions({
+      headerTitle: titles[index],
+      headerRight: () =>
+        titles[0] === 'SNS' && (
+          <AntDesign
+            name="plus"
+            size={30}
+            style={{marginRight: 15}}
+            color="black"
+            onPress={() => navigation.navigate('New Post')}
+          />
+        ),
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
   return (
     <Tab.Navigator
-      initialRouteName="Calculator"
+      initialRouteName="SNS"
       tabBarOptions={{
         activeTintColor: theme.tabActiveColor,
         inactiveTintColor: theme.tabInactiveColor,
