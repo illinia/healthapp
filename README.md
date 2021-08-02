@@ -28,6 +28,8 @@ cd healthapp && npm run ios
 ```
 
 ## History
+* 02 Aug
+   * Make SNS main design
 * 29 Jul
     * Update README, deploy test
 * 28 Jul
