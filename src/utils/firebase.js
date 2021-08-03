@@ -74,3 +74,44 @@ export const createMeal = async meals => {
   await DB.collection('meals').doc(uid).set(newMeal);
   return uid;
 };
+
+export const createPost = async ({content, photoUrl}) => {
+  const user = getCurrentUser();
+  const newPostRef = DB.collection('sns').doc();
+  const id = newPostRef.id;
+  const storageUrl = photoUrl.startsWith('https')
+    ? photoUrl
+    : await uploadSNSImage(photoUrl, id);
+  const newPost = {
+    uid: user.uid,
+    name: user.name,
+    email: user.email,
+    profileURL: user.photoUrl,
+    id,
+    content,
+    createdAt: Date.now(),
+    photoURL: storageUrl,
+  };
+  await newPostRef.set(newPost);
+  return id;
+};
+
+const uploadSNSImage = async (url, postId) => {
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function (e) {
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', url, true);
+    xhr.send(null);
+  });
+  const ref = app.storage().ref(`/sns/${postId}/photo.png`);
+  const snapshot = await ref.put(blob, {contentType: 'image/png'});
+
+  blob.close();
+  return await snapshot.ref.getDownloadURL();
+};

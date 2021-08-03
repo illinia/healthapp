@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import {Text} from 'react-native';
 
 const Container = styled.View`
-  width: 94%;
+  width: 90%;
   background-color: ${({theme}) => theme.background};
 `;
 

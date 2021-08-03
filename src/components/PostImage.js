@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import testimage from '../assets/testimage.png';
 
 const Container = styled.View`
   width: 100%;
   height: 300px;
-  background-color: ${({theme}) => theme.background};
+  background-color: ${({theme}) => theme.imageBackground};
   margin-vertical: 10px;
 `;
 
@@ -14,10 +13,10 @@ const StyledImage = styled.Image`
   height: 100%;
 `;
 
-const PostImage = ({navigation}) => {
+const PostImage = ({navigation, photoURL}) => {
   return (
     <Container>
-      <StyledImage source={testimage} resizeMode="cover" />
+      <StyledImage source={{uri: photoURL}} resizeMode="cover" />
     </Container>
   );
 };

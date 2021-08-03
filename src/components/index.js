@@ -5,5 +5,6 @@ import Spinner from './Spinner';
 import MealBox from './MealBox';
 import Post from './Post';
 import PostText from './PostText';
+import PostImage from './PostImage';
 
-export {Image, Input, Button, Spinner, MealBox, Post, PostText};
+export {Image, Input, Button, Spinner, MealBox, Post, PostText, PostImage};

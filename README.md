@@ -11,7 +11,7 @@
 ![firebase-stack]
 
 
-Many calculating apps are too much complicated.<br>
+Many calculating apps are too much complex.<br>
 This app has simple calculating, profile function and is going to have SNS, Chat functions soon.
 
 ## Installation

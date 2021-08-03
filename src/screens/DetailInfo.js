@@ -96,7 +96,6 @@ const DetailInfo = ({navigation, route}) => {
     <KeyboardAwareScrollView
       contentContainerStyle={{
         flex: 1,
-        backgroundColor: ({theme}) => theme.background,
       }}
       extraScrollHeight={100}
       keyboardShouldPersistTaps="always">

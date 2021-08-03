@@ -19,7 +19,7 @@ const MainTab = ({navigation, route}) => {
     navigation.setOptions({
       headerTitle: titles[index],
       headerRight: () =>
-        titles[0] === 'SNS' && (
+        index === 0 && (
           <AntDesign
             name="plus"
             size={30}
