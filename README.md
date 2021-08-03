@@ -28,6 +28,8 @@ cd healthapp && npm run ios
 ```
 
 ## History
+* 03 Aug
+   * Make SNS show post list, upload post
 * 02 Aug
    * Make SNS main design
 * 29 Jul
