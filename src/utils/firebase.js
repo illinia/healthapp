@@ -75,6 +75,26 @@ export const createMeal = async meals => {
   return uid;
 };
 
+export const addComment = async (content, postId) => {
+  const user = getCurrentUser();
+  console.log('user', user);
+  const postRef = await DB.collection('sns').doc(postId);
+  const test = await postRef.get();
+  const {comment} = await test.data();
+  const id = postRef.collection('comment').doc().id;
+  const commentValue = {
+    id,
+    content: content,
+    name: user.name,
+    uid: user.uid,
+    createdAt: Date.now(),
+    profileURL: user.photoUrl,
+  };
+  await postRef.collection('comment').doc().set(commentValue);
+  const commentCount = comment + 1;
+  await postRef.update({comment: commentCount});
+};
+
 export const createPost = async ({content, photoUrl}) => {
   const user = getCurrentUser();
   const newPostRef = DB.collection('sns').doc();
@@ -89,8 +109,10 @@ export const createPost = async ({content, photoUrl}) => {
     profileURL: user.photoUrl,
     id,
     content,
+    comment: 0,
     createdAt: Date.now(),
     photoURL: storageUrl,
+    like: 0,
   };
   await newPostRef.set(newPost);
   return id;

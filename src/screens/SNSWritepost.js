@@ -3,12 +3,12 @@ import styled from 'styled-components/native';
 import {Alert, Text} from 'react-native';
 import {ProgressContext} from '../context';
 import {createPost} from '../utils/firebase';
-import {images} from '../utils/images';
 import {Input, Button, PostImage} from '../components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {CommonActions} from '@react-navigation/native';
+import {images} from '../utils/images';
 
 const Container = styled.View`
   flex: 1;
@@ -37,7 +37,7 @@ const SNSWritepost = ({navigation}) => {
     });
   });
   const {spinner} = useContext(ProgressContext);
-  const [photoUrl, setPhotoUrl] = useState('');
+  const [photoUrl, setPhotoUrl] = useState(images.logo);
   const [content, setContent] = useState('');
 
   const _handleImageLibrary = async () => {
@@ -60,7 +60,12 @@ const SNSWritepost = ({navigation}) => {
     try {
       spinner.start();
       await createPost({content, photoUrl});
-      navigation.dispatch(CommonActions.navigate('Main'));
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'Main'}],
+        }),
+      );
     } catch (e) {
       Alert.alert('Creation Error', e.message);
     } finally {

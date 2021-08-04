@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Text} from 'react-native';
 import {PostText, PostImage} from '.';
+import {addComment} from '../utils/firebase';
 
 const Container = styled.View`
   width: 100%;
@@ -54,15 +55,35 @@ const AddCommentContainer = styled.View`
   align-items: center;
   margin-top: 6px;
 `;
+
+const CommentInput = styled.TextInput`
+  width: 90%;
+  height: 100%;
+  padding-horizontal: 10px;
+`;
 const Post = React.memo(
-  ({navigation, content, createdAt, name, email, photoURL, profileURL}) => {
+  ({
+    navigation,
+    content,
+    createdAt,
+    name,
+    postId,
+    updateboolean,
+    email,
+    photoURL,
+    profileURL,
+    comment,
+    like,
+  }) => {
     const [photoUrl, setPhotoUrl] = useState(images.logo);
     const [profileUrl, setProfileUrl] = useState(images.logo);
+    const [inputValue, setInputValue] = useState('');
     useEffect(() => {
       setPhotoUrl(photoURL);
       setProfileUrl(profileURL);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     return (
       <Container>
         <TopContainer>
@@ -77,11 +98,13 @@ const Post = React.memo(
               <Text>{email}</Text>
             </ProfileTextContainer>
           </ProfileAndPictureContainer>
-          <Entypo
-            name="dots-three-horizontal"
-            size={20}
-            onPress={() => navigation.navigate('Edit')}
-          />
+          {updateboolean && (
+            <Entypo
+              name="dots-three-horizontal"
+              size={20}
+              onPress={() => navigation.navigate('Edit')}
+            />
+          )}
         </TopContainer>
         <PostText textContent={content} />
         <PostImage photoURL={photoUrl} />
@@ -93,14 +116,14 @@ const Post = React.memo(
               style={{marginRight: 5}}
             />
             <Text style={{fontSize: 16, fontWeight: '500', marginRight: 10}}>
-              300
+              {like}
             </Text>
             <MaterialCommunityIcons
               name="comment-text"
               size={25}
               style={{marginRight: 5}}
             />
-            <Text style={{fontWeight: '500', fontSize: 16}}>300</Text>
+            <Text style={{fontWeight: '500', fontSize: 16}}>{comment}</Text>
           </IconContainer>
           <Text
             style={{
@@ -114,11 +137,11 @@ const Post = React.memo(
         <Text
           style={{
             width: '90%',
-            marginTop: 6,
+            marginVertical: 6,
             fontSize: 16,
             color: 'grey',
           }}
-          onPress={() => navigation.navigate('Comment')}>
+          onPress={() => navigation.navigate('Comment', {postId: postId})}>
           All Comment
         </Text>
         <AddCommentContainer>
@@ -127,7 +150,20 @@ const Post = React.memo(
             rounded
             imageStyle={{width: 30, height: 30, marginRight: 6}}
           />
-          <Text style={{color: 'grey'}}>Add comment...</Text>
+          <CommentInput
+            placeholder="Add comment..."
+            returnKeyType="done"
+            autoCapitalize="none"
+            autoCorrect={false}
+            textContentType="none"
+            value={inputValue}
+            onChangeText={text => setInputValue(text)}
+            onSubmitEditing={() => {
+              addComment(inputValue, postId);
+              setInputValue('');
+              navigation.navigate('Comment', {postId: postId});
+            }}
+          />
         </AddCommentContainer>
       </Container>
     );

@@ -3,9 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Calculator, Profile, SNS, Chat} from '../screens';
 import {ThemeContext} from 'styled-components/native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Tab = createBottomTabNavigator();
