@@ -29,8 +29,12 @@ cd healthapp && npm run ios
 
 ## History
 * 03 Aug
+<<<<<<< HEAD
     * Add comment, comment page, upload firestore
     * Fix refresh issue when start rendering and status was changed
+=======
+   * Make SNS show post list, upload post
+>>>>>>> 67a91c97361c1ed16e7d42e41314332ca84ccc2a
 * 02 Aug
     * Make SNS main design
 * 29 Jul
