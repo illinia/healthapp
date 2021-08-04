@@ -28,8 +28,11 @@ cd healthapp && npm run ios
 ```
 
 ## History
+* 03 Aug
+    * Add comment, comment page, upload firestore
+    * Fix refresh issue when start rendering and status was changed
 * 02 Aug
-   * Make SNS main design
+    * Make SNS main design
 * 29 Jul
     * Update README, deploy test
 * 28 Jul
