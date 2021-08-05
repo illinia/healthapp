@@ -7,6 +7,7 @@ import Post from './Post';
 import PostText from './PostText';
 import PostImage from './PostImage';
 import Comment from './Comment';
+import CommentInput from './CommentInput';
 
 export {
   Image,
@@ -18,4 +19,5 @@ export {
   PostText,
   PostImage,
   Comment,
+  CommentInput,
 };

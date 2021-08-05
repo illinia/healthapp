@@ -7,7 +7,7 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Container = styled.View`
-  align-self: center;
+  /* align-self: center; */
 `;
 
 const StyledImage = styled.Image`

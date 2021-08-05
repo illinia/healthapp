@@ -77,10 +77,9 @@ export const createMeal = async meals => {
 
 export const addComment = async (content, postId) => {
   const user = getCurrentUser();
-  console.log('user', user);
   const postRef = await DB.collection('sns').doc(postId);
-  const test = await postRef.get();
-  const {comment} = await test.data();
+  const getDoc = await postRef.get();
+  const {comment} = await getDoc.data();
   const id = postRef.collection('comment').doc().id;
   const commentValue = {
     id,
@@ -90,9 +89,60 @@ export const addComment = async (content, postId) => {
     createdAt: Date.now(),
     profileURL: user.photoUrl,
   };
-  await postRef.collection('comment').doc().set(commentValue);
+  await postRef.collection('comment').doc(id).set(commentValue);
   const commentCount = comment + 1;
   await postRef.update({comment: commentCount});
+};
+
+export const pressLike = async postId => {
+  const user = getCurrentUser();
+  const postRef = await DB.collection('sns').doc(postId);
+  const getDoc = await postRef.get();
+  const {like} = await getDoc.data();
+  const likeCount = like + 1;
+  await postRef.update({like: likeCount});
+  await postRef.collection('like').doc(user.uid).set({});
+};
+
+export const isLiked = async postId => {
+  const user = getCurrentUser();
+  const postRef = await DB.collection('sns').doc(postId);
+  const likeRef = await postRef.collection('like').doc(user.uid);
+  const getRef = await likeRef.get();
+  const dataRef = await getRef.data();
+  return dataRef != undefined;
+};
+
+export const unLike = async postId => {
+  const user = getCurrentUser();
+  const postRef = await DB.collection('sns').doc(postId);
+  const getDoc = await postRef.get();
+  const {like} = await getDoc.data();
+  const likeCount = like - 1;
+  await postRef.update({like: likeCount});
+  await postRef
+    .collection('like')
+    .doc(user.uid)
+    .delete()
+    .then(() => {})
+    .catch(e => {
+      console.log(e);
+    });
+};
+export const deleteComment = async (postId, commentId) => {
+  const postRef = await DB.collection('sns').doc(postId);
+  const getDoc = await postRef.get();
+  const {comment} = await getDoc.data();
+  const commentCount = comment - 1;
+  await postRef.update({comment: commentCount});
+  await postRef
+    .collection('comment')
+    .doc(commentId)
+    .delete()
+    .then(() => {})
+    .catch(e => {
+      console.log(e);
+    });
 };
 
 export const createPost = async ({content, photoUrl}) => {

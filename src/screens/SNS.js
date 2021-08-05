@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {FlatList, RefreshControl} from 'react-native';
-import {DB, getCurrentUser} from '../utils/firebase';
+import {DB, getCurrentUser, isLiked} from '../utils/firebase';
 import styled from 'styled-components/native';
 import {Post} from '../components';
 import moment from 'moment';
@@ -27,20 +27,22 @@ const SNS = ({navigation, route}) => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    const unsubscribe = DB.collection('sns')
+    // const unsubscribe =
+    DB.collection('sns')
       .orderBy('createdAt', 'desc')
-      .onSnapshot(snapshot => {
+      .get()
+      .then(value => {
         const list = [];
-        snapshot.forEach(doc => {
+        value.forEach(doc => {
           list.push(doc.data());
         });
         setPosts(list);
+      })
+      .then(() => {
+        wait(1000).then(() => {
+          setRefreshing(false);
+        });
       });
-
-    wait(1000).then(() => {
-      setRefreshing(false);
-      unsubscribe();
-    });
   }, []);
 
   useEffect(() => {

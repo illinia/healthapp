@@ -5,9 +5,10 @@ import {images} from '../utils/images';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Text} from 'react-native';
+import {Alert, Text} from 'react-native';
 import {PostText, PostImage} from '.';
-import {addComment} from '../utils/firebase';
+import {addComment, isLiked, pressLike, unLike} from '../utils/firebase';
+import {removeWhitespace} from '../utils/common';
 
 const Container = styled.View`
   width: 100%;
@@ -60,6 +61,7 @@ const CommentInput = styled.TextInput`
   width: 90%;
   height: 100%;
   padding-horizontal: 10px;
+  font-size: 18px;
 `;
 const Post = React.memo(
   ({
@@ -78,11 +80,55 @@ const Post = React.memo(
     const [photoUrl, setPhotoUrl] = useState(images.logo);
     const [profileUrl, setProfileUrl] = useState(images.logo);
     const [inputValue, setInputValue] = useState('');
+    const [likeCount, setlikeCount] = useState(like);
+    const [isLikedCheck, setIsLikedCheck] = useState(false);
+    const [commentCount, setCommentCount] = useState(comment);
+
+    const _isLiked = async _postId => {
+      setIsLikedCheck(await isLiked(_postId));
+    };
+
     useEffect(() => {
       setPhotoUrl(photoURL);
       setProfileUrl(profileURL);
+      _isLiked(postId);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+      setCommentCount(comment);
+      setlikeCount(like);
+    }, [comment, like]);
+
+    const _onBlur = () => {
+      setInputValue('');
+    };
+
+    const _onSubmitediting = async () => {
+      const result = removeWhitespace(inputValue);
+      if (!result) {
+        Alert.alert('Whitespace is not allowed for comment.');
+        setInputValue('');
+      } else {
+        await addComment(inputValue, postId);
+        setCommentCount(commentCount + 1);
+        setInputValue('');
+        navigation.navigate('Comment', {postId: postId});
+      }
+    };
+
+    const _pressLike = async () => {
+      Alert.alert('Like is pressed!');
+      if (isLikedCheck === false) {
+        await pressLike(postId);
+        setlikeCount(likeCount + 1);
+        setIsLikedCheck(!isLikedCheck);
+      } else {
+        await unLike(postId);
+        setlikeCount(likeCount - 1);
+        setIsLikedCheck(!isLikedCheck);
+      }
+    };
 
     return (
       <Container>
@@ -110,20 +156,37 @@ const Post = React.memo(
         <PostImage photoURL={photoUrl} />
         <BottomContainer>
           <IconContainer>
-            <Ionicons
-              name="ios-heart-outline"
-              size={25}
-              style={{marginRight: 5}}
-            />
+            {isLikedCheck ? (
+              <Ionicons
+                name="ios-heart-sharp"
+                size={25}
+                color="red"
+                style={{marginRight: 5}}
+                onPress={() => _pressLike()}
+                disabled
+              />
+            ) : (
+              <Ionicons
+                name="ios-heart-outline"
+                size={25}
+                color="red"
+                style={{marginRight: 5}}
+                onPress={() => _pressLike()}
+                disabled
+              />
+            )}
+
             <Text style={{fontSize: 16, fontWeight: '500', marginRight: 10}}>
-              {like}
+              {likeCount}
             </Text>
             <MaterialCommunityIcons
               name="comment-text"
               size={25}
               style={{marginRight: 5}}
             />
-            <Text style={{fontWeight: '500', fontSize: 16}}>{comment}</Text>
+            <Text style={{fontWeight: '500', fontSize: 16}}>
+              {commentCount}
+            </Text>
           </IconContainer>
           <Text
             style={{
@@ -156,13 +219,10 @@ const Post = React.memo(
             autoCapitalize="none"
             autoCorrect={false}
             textContentType="none"
+            onBlur={() => _onBlur()}
             value={inputValue}
             onChangeText={text => setInputValue(text)}
-            onSubmitEditing={() => {
-              addComment(inputValue, postId);
-              setInputValue('');
-              navigation.navigate('Comment', {postId: postId});
-            }}
+            onSubmitEditing={() => _onSubmitediting()}
           />
         </AddCommentContainer>
       </Container>

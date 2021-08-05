@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import styled from 'styled-components/native';
 import {images} from '../utils/images';
 import {Alert, Text} from 'react-native';
 import {Image} from '.';
+import {deleteComment} from '../utils/firebase';
 
 const Container = styled.View`
   width: 100%;
@@ -35,12 +36,28 @@ const DeleteButton = styled.Text`
   color: grey;
 `;
 
-const Comment = ({navigation, profileURL, name, content, createdAt}) => {
+const Comment = ({
+  navigation,
+  profileURL,
+  name,
+  content,
+  createdAt,
+  commentId,
+  postId,
+  isOwned,
+  onRefresh,
+}) => {
   const [profileUrl, setProfileUrl] = useState(images.logo);
   useEffect(() => {
     setProfileUrl(profileURL);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const _deleteComment = async () => {
+    Alert.alert('Deleted!');
+    await deleteComment(postId, commentId);
+    onRefresh();
+  };
   return (
     <Container>
       <Image
@@ -53,9 +70,9 @@ const Comment = ({navigation, profileURL, name, content, createdAt}) => {
         <Text style={{fontSize: 16}}>{content}</Text>
         <TimeAndDelete>
           <Text style={{color: 'grey'}}>{createdAt}</Text>
-          <DeleteButton onPress={() => Alert.alert('delete')}>
-            Delete
-          </DeleteButton>
+          {isOwned && (
+            <DeleteButton onPress={() => _deleteComment()}>Delete</DeleteButton>
+          )}
         </TimeAndDelete>
       </NameAndContentContainer>
     </Container>

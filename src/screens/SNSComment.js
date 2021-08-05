@@ -1,20 +1,37 @@
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useState, useEffect, useLayoutEffect} from 'react';
 import styled from 'styled-components/native';
 import {RefreshControl, FlatList} from 'react-native';
-import {DB} from '../utils/firebase';
-import {Comment} from '../components';
+import {DB, getCurrentUser} from '../utils/firebase';
+import {Comment, CommentInput} from '../components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import moment from 'moment';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   width: 100%;
   background-color: ${({theme}) => theme.background};
 `;
 
-const SNSDeletepost = ({navigation, route}) => {
+const SNSComment = ({navigation, route}) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: ({onPress}) => (
+        <FontAwesome
+          name="angle-left"
+          size={35}
+          style={{marginLeft: 15}}
+          color="black"
+          onPress={onPress}
+        />
+      ),
+    });
+  });
   const {postId} = route.params;
   const [refreshing, setRefreshing] = useState(false);
   const [comments, setComments] = useState([]);
+  const [keyboard, setKeyboard] = useState(false);
+
+  const user = getCurrentUser();
 
   const getDateOrTime = ts => {
     return moment(ts).fromNow();
@@ -49,13 +66,13 @@ const SNSDeletepost = ({navigation, route}) => {
     onRefresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
-    <KeyboardAwareScrollView
-      style={{flex: 1, backgroundColor: 'white'}}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-      <Container>
+    <>
+      <Container
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <FlatList
           keyExtractor={comment => comment.id}
           data={comments}
@@ -65,12 +82,34 @@ const SNSDeletepost = ({navigation, route}) => {
               name={comment.item.name}
               content={comment.item.content}
               createdAt={getDateOrTime(comment.item.createdAt)}
+              commentId={comment.item.id}
+              postId={postId}
+              isOwned={comment.item.uid === user.uid}
+              onRefresh={() => onRefresh()}
             />
           )}
         />
       </Container>
-    </KeyboardAwareScrollView>
+      <KeyboardAwareScrollView
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: keyboard ? '53%' : '15%',
+          bottom: 0,
+          // backgroundColor: 'white',
+        }}
+        scrollEnabled={false}>
+        <CommentInput
+          photoURL={user.photoUrl}
+          onBlur={() => setKeyboard(false)}
+          onFocus={() => {
+            setKeyboard(true);
+            console.log(keyboard);
+          }}
+        />
+      </KeyboardAwareScrollView>
+    </>
   );
 };
 
-export default SNSDeletepost;
+export default React.memo(SNSComment);
