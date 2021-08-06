@@ -34,7 +34,7 @@ const Signup = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [disabled, setDisabled] = useState(true);
-  const [photoUrl, setPhotoUrl] = useState(images.logo);
+  const [photoUrl, setPhotoUrl] = useState('');
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -68,14 +68,18 @@ const Signup = () => {
   }, [name, email, password, passwordConfirm, errorMessage]);
 
   const _handleSignupButtonPress = async () => {
-    try {
-      spinner.start();
-      const user = await signup({email, password, name, photoUrl});
-      userDispatch(user);
-    } catch (e) {
-      Alert.alert('Singup Error', e.message);
-    } finally {
-      spinner.stop();
+    if (photoUrl) {
+      try {
+        spinner.start();
+        const user = await signup({email, password, name, photoUrl});
+        userDispatch(user);
+      } catch (e) {
+        Alert.alert('Singup Error', e.message);
+      } finally {
+        spinner.stop();
+      }
+    } else {
+      Alert.alert('Please upload ur profile!');
     }
   };
 

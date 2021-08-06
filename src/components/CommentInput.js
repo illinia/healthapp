@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Alert} from 'react-native';
 import styled from 'styled-components/native';
 import {Image} from '.';
+import {removeWhitespace} from '../utils/common';
+import {addComment} from '../utils/firebase';
 
 const Container = styled.Pressable`
   width: 100%;
@@ -10,7 +12,7 @@ const Container = styled.Pressable`
   border-top-width: 2px;
   border-color: ${({theme}) => theme.imageBackground};
   border-style: solid;
-  padding-horizontal: 10px;
+  padding-horizontal: 20px;
   padding-top: 24px;
   /* padding-bottom: 30px; */
   flex-direction: row;
@@ -27,7 +29,28 @@ const InsideInput = styled.TextInput`
   font-size: 18px;
 `;
 
-const CommentInput = ({navigation, photoURL, onFocus, onBlur}) => {
+const CommentInput = ({
+  navigation,
+  photoURL,
+  onFocus,
+  onBlur,
+  onRefresh,
+  postId,
+}) => {
+  const [commentValue, setCommentValue] = useState('');
+
+  const _addComment = async () => {
+    const result = removeWhitespace(commentValue);
+    if (!result) {
+      Alert.alert('Whitespace is not allowed for comment.');
+      setCommentValue('');
+    } else {
+      Alert.alert('Add successfully!');
+      await addComment(commentValue, postId);
+      setCommentValue('');
+      onRefresh();
+    }
+  };
   return (
     <Container>
       <Image url={photoURL} rounded imageStyle={{width: 54, height: 54}} />
@@ -39,6 +62,10 @@ const CommentInput = ({navigation, photoURL, onFocus, onBlur}) => {
         autoCorrect={false}
         textContentType="none"
         underlineColorAndroid="transparent"
+        value={commentValue}
+        onChangeText={text => setCommentValue(text)}
+        onSubmitEditing={() => _addComment()}
+        returnKeyType="done"
       />
     </Container>
   );

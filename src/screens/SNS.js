@@ -67,6 +67,7 @@ const SNS = ({navigation, route}) => {
               createdAt={getDateOrTime(post.item.createdAt)}
               name={post.item.name}
               postId={post.item.id}
+              uid={post.item.uid}
               updateboolean={post.item.uid === user.uid ? true : false}
               email={post.item?.email || 'guest'}
               photoURL={post.item.photoURL}

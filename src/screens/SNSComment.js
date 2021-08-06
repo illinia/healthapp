@@ -7,9 +7,13 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import moment from 'moment';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const Container = styled.ScrollView`
-  width: 100%;
-  background-color: ${({theme}) => theme.background};
+const ScrollContainer = styled.ScrollView`
+  background-color: green;
+  /* ${({theme}) => theme.background}; */
+`;
+
+const ViewContainer = styled.View`
+  height: ${({comments}) => (comments.length >= 7 ? 87 : 100)}%;
 `;
 
 const SNSComment = ({navigation, route}) => {
@@ -69,32 +73,35 @@ const SNSComment = ({navigation, route}) => {
 
   return (
     <>
-      <Container
+      <ScrollContainer
+        contentContainerStyle={{flex: 1}}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <FlatList
-          keyExtractor={comment => comment.id}
-          data={comments}
-          renderItem={comment => (
-            <Comment
-              profileURL={comment.item.profileURL}
-              name={comment.item.name}
-              content={comment.item.content}
-              createdAt={getDateOrTime(comment.item.createdAt)}
-              commentId={comment.item.id}
-              postId={postId}
-              isOwned={comment.item.uid === user.uid}
-              onRefresh={() => onRefresh()}
-            />
-          )}
-        />
-      </Container>
+        <ViewContainer comments={comments}>
+          <FlatList
+            keyExtractor={comment => comment.id}
+            data={comments}
+            renderItem={comment => (
+              <Comment
+                profileURL={comment.item.profileURL}
+                name={comment.item.name}
+                content={comment.item.content}
+                createdAt={getDateOrTime(comment.item.createdAt)}
+                commentId={comment.item.id}
+                postId={postId}
+                isOwned={comment.item.uid === user.uid}
+                onRefresh={() => onRefresh()}
+              />
+            )}
+          />
+        </ViewContainer>
+      </ScrollContainer>
       <KeyboardAwareScrollView
         style={{
           position: 'absolute',
           width: '100%',
-          height: keyboard ? '53%' : '15%',
+          height: keyboard ? '53%' : '13%',
           bottom: 0,
           // backgroundColor: 'white',
         }}
@@ -106,6 +113,8 @@ const SNSComment = ({navigation, route}) => {
             setKeyboard(true);
             console.log(keyboard);
           }}
+          onRefresh={() => onRefresh()}
+          postId={postId}
         />
       </KeyboardAwareScrollView>
     </>

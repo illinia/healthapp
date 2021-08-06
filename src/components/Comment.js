@@ -10,7 +10,7 @@ const Container = styled.View`
   flex-direction: row;
   justify-content: space-between;
   background-color: ${({theme}) => theme.background};
-  margin-vertical: 10px;
+  padding-vertical: 10px;
   padding-horizontal: 15px;
 `;
 
@@ -54,7 +54,7 @@ const Comment = ({
   }, []);
 
   const _deleteComment = async () => {
-    Alert.alert('Deleted!');
+    Alert.alert('Comment is deleted!');
     await deleteComment(postId, commentId);
     onRefresh();
   };

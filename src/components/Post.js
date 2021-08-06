@@ -63,171 +63,173 @@ const CommentInput = styled.TextInput`
   padding-horizontal: 10px;
   font-size: 18px;
 `;
-const Post = React.memo(
-  ({
-    navigation,
-    content,
-    createdAt,
-    name,
-    postId,
-    updateboolean,
-    email,
-    photoURL,
-    profileURL,
-    comment,
-    like,
-  }) => {
-    const [photoUrl, setPhotoUrl] = useState(images.logo);
-    const [profileUrl, setProfileUrl] = useState(images.logo);
-    const [inputValue, setInputValue] = useState('');
-    const [likeCount, setlikeCount] = useState(like);
-    const [isLikedCheck, setIsLikedCheck] = useState(false);
-    const [commentCount, setCommentCount] = useState(comment);
+const Post = ({
+  navigation,
+  content,
+  createdAt,
+  name,
+  postId,
+  updateboolean,
+  email,
+  photoURL,
+  profileURL,
+  comment,
+  like,
+}) => {
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [profileUrl, setProfileUrl] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const [likeCount, setlikeCount] = useState(like);
+  const [isLikedCheck, setIsLikedCheck] = useState(false);
+  const [commentCount, setCommentCount] = useState(comment);
 
-    const _isLiked = async _postId => {
-      setIsLikedCheck(await isLiked(_postId));
-    };
+  const _isLiked = async _postId => {
+    setIsLikedCheck(await isLiked(_postId));
+  };
 
-    useEffect(() => {
-      setPhotoUrl(photoURL);
-      setProfileUrl(profileURL);
-      _isLiked(postId);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+  useEffect(() => {
+    setPhotoUrl(photoURL);
+    setProfileUrl(profileURL);
+    _isLiked(postId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    useEffect(() => {
-      setCommentCount(comment);
-      setlikeCount(like);
-    }, [comment, like]);
+  useEffect(() => {
+    setCommentCount(comment);
+    setlikeCount(like);
+  }, [comment, like]);
 
-    const _onBlur = () => {
+  const _onBlur = () => {
+    setInputValue('');
+  };
+
+  const _addComment = async () => {
+    const result = removeWhitespace(inputValue);
+    if (!result) {
+      Alert.alert('Whitespace is not allowed for comment.');
       setInputValue('');
-    };
+    } else {
+      await addComment(inputValue, postId);
+      setCommentCount(commentCount + 1);
+      setInputValue('');
+      navigation.navigate('Comment', {postId: postId});
+    }
+  };
 
-    const _onSubmitediting = async () => {
-      const result = removeWhitespace(inputValue);
-      if (!result) {
-        Alert.alert('Whitespace is not allowed for comment.');
-        setInputValue('');
-      } else {
-        await addComment(inputValue, postId);
-        setCommentCount(commentCount + 1);
-        setInputValue('');
-        navigation.navigate('Comment', {postId: postId});
-      }
-    };
+  const _pressLike = async () => {
+    Alert.alert('Like is pressed!');
+    if (isLikedCheck === false) {
+      await pressLike(postId);
+      setlikeCount(likeCount + 1);
+      setIsLikedCheck(!isLikedCheck);
+    } else {
+      await unLike(postId);
+      setlikeCount(likeCount - 1);
+      setIsLikedCheck(!isLikedCheck);
+    }
+  };
 
-    const _pressLike = async () => {
-      Alert.alert('Like is pressed!');
-      if (isLikedCheck === false) {
-        await pressLike(postId);
-        setlikeCount(likeCount + 1);
-        setIsLikedCheck(!isLikedCheck);
-      } else {
-        await unLike(postId);
-        setlikeCount(likeCount - 1);
-        setIsLikedCheck(!isLikedCheck);
-      }
-    };
-
-    return (
-      <Container>
-        <TopContainer>
-          <ProfileAndPictureContainer>
-            <Image
-              url={profileUrl}
-              rounded
-              imageStyle={{width: 54, height: 54, marginRight: 6}}
-            />
-            <ProfileTextContainer>
-              <Text style={{fontWeight: '600', fontSize: 20}}>{name}</Text>
-              <Text>{email}</Text>
-            </ProfileTextContainer>
-          </ProfileAndPictureContainer>
-          {updateboolean && (
-            <Entypo
-              name="dots-three-horizontal"
-              size={20}
-              onPress={() => navigation.navigate('Edit')}
-            />
-          )}
-        </TopContainer>
-        <PostText textContent={content} />
-        <PostImage photoURL={photoUrl} />
-        <BottomContainer>
-          <IconContainer>
-            {isLikedCheck ? (
-              <Ionicons
-                name="ios-heart-sharp"
-                size={25}
-                color="red"
-                style={{marginRight: 5}}
-                onPress={() => _pressLike()}
-                disabled
-              />
-            ) : (
-              <Ionicons
-                name="ios-heart-outline"
-                size={25}
-                color="red"
-                style={{marginRight: 5}}
-                onPress={() => _pressLike()}
-                disabled
-              />
-            )}
-
-            <Text style={{fontSize: 16, fontWeight: '500', marginRight: 10}}>
-              {likeCount}
-            </Text>
-            <MaterialCommunityIcons
-              name="comment-text"
-              size={25}
-              style={{marginRight: 5}}
-            />
-            <Text style={{fontWeight: '500', fontSize: 16}}>
-              {commentCount}
-            </Text>
-          </IconContainer>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: '500',
-              color: 'grey',
-            }}>
-            {createdAt}
-          </Text>
-        </BottomContainer>
-        <Text
-          style={{
-            width: '90%',
-            marginVertical: 6,
-            fontSize: 16,
-            color: 'grey',
-          }}
-          onPress={() => navigation.navigate('Comment', {postId: postId})}>
-          All Comment
-        </Text>
-        <AddCommentContainer>
+  return (
+    <Container>
+      <TopContainer>
+        <ProfileAndPictureContainer>
           <Image
             url={profileUrl}
             rounded
-            imageStyle={{width: 30, height: 30, marginRight: 6}}
+            imageStyle={{width: 54, height: 54, marginRight: 6}}
           />
-          <CommentInput
-            placeholder="Add comment..."
-            returnKeyType="done"
-            autoCapitalize="none"
-            autoCorrect={false}
-            textContentType="none"
-            onBlur={() => _onBlur()}
-            value={inputValue}
-            onChangeText={text => setInputValue(text)}
-            onSubmitEditing={() => _onSubmitediting()}
+          <ProfileTextContainer>
+            <Text style={{fontWeight: '600', fontSize: 20}}>{name}</Text>
+            <Text>{email}</Text>
+          </ProfileTextContainer>
+        </ProfileAndPictureContainer>
+        {updateboolean && (
+          <Entypo
+            name="dots-three-horizontal"
+            size={20}
+            onPress={() =>
+              navigation.navigate('New Post', {
+                content: content,
+                postId: postId,
+                photoURL: photoURL,
+              })
+            }
           />
-        </AddCommentContainer>
-      </Container>
-    );
-  },
-);
+        )}
+      </TopContainer>
+      <PostText textContent={content} />
+      <PostImage photoURL={photoUrl} />
+      <BottomContainer>
+        <IconContainer>
+          {isLikedCheck ? (
+            <Ionicons
+              name="ios-heart-sharp"
+              size={25}
+              color="red"
+              style={{marginRight: 5}}
+              onPress={() => _pressLike()}
+              disabled
+            />
+          ) : (
+            <Ionicons
+              name="ios-heart-outline"
+              size={25}
+              color="red"
+              style={{marginRight: 5}}
+              onPress={() => _pressLike()}
+              disabled
+            />
+          )}
+
+          <Text style={{fontSize: 16, fontWeight: '500', marginRight: 10}}>
+            {likeCount}
+          </Text>
+          <MaterialCommunityIcons
+            name="comment-text"
+            size={25}
+            style={{marginRight: 5}}
+          />
+          <Text style={{fontWeight: '500', fontSize: 16}}>{commentCount}</Text>
+        </IconContainer>
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: '500',
+            color: 'grey',
+          }}>
+          {createdAt}
+        </Text>
+      </BottomContainer>
+      <Text
+        style={{
+          width: '90%',
+          marginVertical: 6,
+          fontSize: 16,
+          color: 'grey',
+        }}
+        onPress={() => navigation.navigate('Comment', {postId: postId})}>
+        All Comment
+      </Text>
+      <AddCommentContainer>
+        <Image
+          url={profileUrl}
+          rounded
+          imageStyle={{width: 30, height: 30, marginRight: 6}}
+        />
+        <CommentInput
+          placeholder="Add comment..."
+          returnKeyType="done"
+          autoCapitalize="none"
+          autoCorrect={false}
+          textContentType="none"
+          onBlur={() => _onBlur()}
+          value={inputValue}
+          onChangeText={text => setInputValue(text)}
+          onSubmitEditing={() => _addComment()}
+        />
+      </AddCommentContainer>
+    </Container>
+  );
+};
 
 export default Post;

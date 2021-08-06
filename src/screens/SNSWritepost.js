@@ -1,8 +1,8 @@
-import React, {useContext, useState, useLayoutEffect} from 'react';
-import styled from 'styled-components/native';
+import React, {useContext, useState, useLayoutEffect, useEffect} from 'react';
+import styled, {ThemeContext} from 'styled-components/native';
 import {Alert, Text} from 'react-native';
 import {ProgressContext} from '../context';
-import {createPost} from '../utils/firebase';
+import {createPost, deletePost, updatePost} from '../utils/firebase';
 import {Input, Button, PostImage} from '../components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -15,7 +15,7 @@ const Container = styled.View`
   background-color: ${({theme}) => theme.background};
 `;
 
-const SNSWritepost = ({navigation}) => {
+const SNSWritepost = ({navigation, route}) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: ({onPress}) => (
@@ -39,6 +39,16 @@ const SNSWritepost = ({navigation}) => {
   const {spinner} = useContext(ProgressContext);
   const [photoUrl, setPhotoUrl] = useState(images.logo);
   const [content, setContent] = useState('');
+
+  const theme = useContext(ThemeContext);
+
+  useEffect(() => {
+    if (route.params) {
+      setContent(route.params.content);
+      setPhotoUrl(route.params.photoURL);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const _handleImageLibrary = async () => {
     await launchImageLibrary(
@@ -67,36 +77,105 @@ const SNSWritepost = ({navigation}) => {
         }),
       );
     } catch (e) {
-      Alert.alert('Creation Error', e.message);
+      Alert.alert('Creation error', e.message);
     } finally {
       spinner.stop();
     }
   };
+
+  const _handleUpdateButtonPress = async () => {
+    try {
+      spinner.start();
+      await updatePost(content, photoUrl, route.params.postId);
+      Alert.alert('Post is updated!');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'Main'}],
+        }),
+      );
+    } catch (e) {
+      Alert.alert('Update error', e.message);
+    } finally {
+      spinner.stop();
+    }
+  };
+
+  const _handleDeleteButtonPress = async () => {
+    try {
+      spinner.start();
+      await deletePost(route.params.postId);
+      Alert.alert('Post is deleted!');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'Main'}],
+        }),
+      );
+    } catch (e) {
+      Alert.alert('Delete error', e.message);
+    } finally {
+      spinner.stop();
+    }
+  };
+
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{
         flex: 1,
         justifyContent: 'center',
         alignContent: 'center',
-      }}>
+      }}
+      keyboardShouldPersistTaps="always">
       <Container>
         <Input
           inputStyle={{width: '90%', alignSelf: 'center', borderColor: '#fff'}}
           placeholder="What's going on?"
           value={content}
           onChangeText={text => setContent(text)}
+          onSubmitEditing={() => {
+            route.params
+              ? _handleUpdateButtonPress()
+              : _handelCreateButtonPress();
+          }}
+          returnKeyType="done"
         />
         <PostImage photoURL={photoUrl} />
-        <Button
-          containerStyle={{
-            width: '60%',
-            marginTop: 10,
-            borderRadius: 10,
-            alignSelf: 'center',
-          }}
-          title="Upload Post!"
-          onPress={() => _handelCreateButtonPress()}
-        />
+        {route.params ? (
+          <>
+            <Button
+              containerStyle={{
+                width: '90%',
+                marginTop: 10,
+                borderRadius: 10,
+                alignSelf: 'center',
+              }}
+              title="Update Post!"
+              onPress={() => _handleUpdateButtonPress()}
+            />
+            <Button
+              containerStyle={{
+                width: '90%',
+                backgroundColor: theme.buttonLogout,
+                borderRadius: 10,
+                alignSelf: 'center',
+              }}
+              title="Delete Post!"
+              onPress={() => _handleDeleteButtonPress()}
+            />
+          </>
+        ) : (
+          <Button
+            containerStyle={{
+              width: '90%',
+              marginTop: 10,
+              borderRadius: 10,
+              alignSelf: 'center',
+            }}
+            title="Upload Post!"
+            onPress={() => _handelCreateButtonPress()}
+          />
+        )}
       </Container>
     </KeyboardAwareScrollView>
   );

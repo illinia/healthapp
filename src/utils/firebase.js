@@ -94,6 +94,22 @@ export const addComment = async (content, postId) => {
   await postRef.update({comment: commentCount});
 };
 
+export const deleteComment = async (postId, commentId) => {
+  const postRef = await DB.collection('sns').doc(postId);
+  const getDoc = await postRef.get();
+  const {comment} = await getDoc.data();
+  const commentCount = comment - 1;
+  await postRef.update({comment: commentCount});
+  await postRef
+    .collection('comment')
+    .doc(commentId)
+    .delete()
+    .then(() => {})
+    .catch(e => {
+      console.log(e);
+    });
+};
+
 export const pressLike = async postId => {
   const user = getCurrentUser();
   const postRef = await DB.collection('sns').doc(postId);
@@ -110,7 +126,7 @@ export const isLiked = async postId => {
   const likeRef = await postRef.collection('like').doc(user.uid);
   const getRef = await likeRef.get();
   const dataRef = await getRef.data();
-  return dataRef != undefined;
+  return dataRef !== undefined;
 };
 
 export const unLike = async postId => {
@@ -129,21 +145,6 @@ export const unLike = async postId => {
       console.log(e);
     });
 };
-export const deleteComment = async (postId, commentId) => {
-  const postRef = await DB.collection('sns').doc(postId);
-  const getDoc = await postRef.get();
-  const {comment} = await getDoc.data();
-  const commentCount = comment - 1;
-  await postRef.update({comment: commentCount});
-  await postRef
-    .collection('comment')
-    .doc(commentId)
-    .delete()
-    .then(() => {})
-    .catch(e => {
-      console.log(e);
-    });
-};
 
 export const createPost = async ({content, photoUrl}) => {
   const user = getCurrentUser();
@@ -156,7 +157,7 @@ export const createPost = async ({content, photoUrl}) => {
     uid: user.uid,
     name: user.name,
     email: user.email,
-    profileURL: user.photoUrl,
+    profileURL: `https://firebasestorage.googleapis.com/v0/b/healthapp-2a694.appspot.com/o/profiles%2F${user.uid}%2Fphoto.png?alt=media`,
     id,
     content,
     comment: 0,
@@ -186,4 +187,18 @@ const uploadSNSImage = async (url, postId) => {
 
   blob.close();
   return await snapshot.ref.getDownloadURL();
+};
+
+export const updatePost = async (content, photoUrl, postId) => {
+  const postRef = await DB.collection('sns').doc(postId);
+  await postRef.update({
+    content: content,
+    photoURL: photoUrl,
+    createdAt: Date.now(),
+  });
+};
+
+export const deletePost = async postId => {
+  const postRef = await DB.collection('sns').doc(postId);
+  await postRef.delete();
 };

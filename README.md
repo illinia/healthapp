@@ -28,6 +28,14 @@ cd healthapp && npm run ios
 ```
 
 ## History
+* 06 Aug
+    * Make update, delete post function
+    * Make add comment function in comment page
+    * Fix UI in comment page
+    * Fix loading structure of profile in SNS when it was changed in firebase
+* 05 Aug
+    * Make like, unlike function connected with firebase
+    * Make comment list, comment input
 * 04 Aug
     * Add comment, comment page, upload firestore
     * Fix refresh issue when start rendering and status was changed

@@ -4,6 +4,7 @@ import {Button, Image, Input} from '../components';
 import {logout, getCurrentUser, updateUserPhoto} from '../utils/firebase';
 import {UserContext, ProgressContext} from '../context';
 import {Alert} from 'react-native';
+import {CommonActions} from '@react-navigation/native';
 
 const Container = styled.View`
   flex: 1;
@@ -13,7 +14,7 @@ const Container = styled.View`
   padding: 0 20px;
 `;
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   const {userDispatch} = useContext(UserContext);
   const {spinner} = useContext(ProgressContext);
   const theme = useContext(ThemeContext);
@@ -38,6 +39,12 @@ const Profile = () => {
       spinner.start();
       const updatedUser = await updateUserPhoto(url);
       setPhotoUrl(updatedUser.photoUrl);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'Main'}],
+        }),
+      );
     } catch (e) {
       Alert.alert('Photo Error', e.message);
     } finally {
