@@ -8,8 +8,7 @@ import moment from 'moment';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const ScrollContainer = styled.ScrollView`
-  background-color: green;
-  /* ${({theme}) => theme.background}; */
+  background-color: ${({theme}) => theme.background};
 `;
 
 const ViewContainer = styled.View`
