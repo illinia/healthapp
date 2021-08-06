@@ -14,6 +14,35 @@
 Many calculating apps are too much complex.<br>
 This app has simple calculating, profile function and is going to have SNS, Chat functions soon.
 
+## How to use
+
+<details>
+    <summary>자세히</summary>
+    <br>
+
+*How to login*
+<br>
+
+![signin,login](https://user-images.githubusercontent.com/67290425/128492684-1bff7ffd-dc92-4179-93ee-4311e954acf3.gif)
+
+*How to use sns post*
+<br>
+
+![login,like,comment](https://user-images.githubusercontent.com/67290425/128492993-5528e4b3-93bd-4d26-8318-7b17a152856b.gif)
+
+*How to upload post*
+<br>
+
+![upload, comment](https://user-images.githubusercontent.com/67290425/128493269-e6258bbf-bff7-4c4c-87d4-557acecc875b.gif)
+
+*How to update and delete post*
+<br>
+
+![update,delete](https://user-images.githubusercontent.com/67290425/128493389-5bce1616-8168-4408-a3c7-deac02e31a0a.gif)
+
+</details>
+<br>
+
 ## Installation
 *first terminal*
 ```

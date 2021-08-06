@@ -1,13 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {Image} from '.';
-import {images} from '../utils/images';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Alert, Text} from 'react-native';
 import {PostText, PostImage} from '.';
-import {addComment, isLiked, pressLike, unLike} from '../utils/firebase';
+import {
+  addComment,
+  getCurrentUser,
+  isLiked,
+  pressLike,
+  unLike,
+} from '../utils/firebase';
 import {removeWhitespace} from '../utils/common';
 
 const Container = styled.View`
@@ -37,6 +42,7 @@ const ProfileTextContainer = styled.View`
 `;
 
 const BottomContainer = styled.View`
+  margin-top: 10px;
   width: 90%;
   flex-direction: row;
   justify-content: space-between;
@@ -82,6 +88,8 @@ const Post = ({
   const [likeCount, setlikeCount] = useState(like);
   const [isLikedCheck, setIsLikedCheck] = useState(false);
   const [commentCount, setCommentCount] = useState(comment);
+
+  const user = getCurrentUser();
 
   const _isLiked = async _postId => {
     setIsLikedCheck(await isLiked(_postId));
@@ -139,7 +147,7 @@ const Post = ({
             imageStyle={{width: 54, height: 54, marginRight: 6}}
           />
           <ProfileTextContainer>
-            <Text style={{fontWeight: '600', fontSize: 20}}>{name}</Text>
+            <Text style={{fontWeight: '600', fontSize: 16}}>{name}</Text>
             <Text>{email}</Text>
           </ProfileTextContainer>
         </ProfileAndPictureContainer>
@@ -157,8 +165,8 @@ const Post = ({
           />
         )}
       </TopContainer>
-      <PostText textContent={content} />
       <PostImage photoURL={photoUrl} />
+      <PostText textContent={content} />
       <BottomContainer>
         <IconContainer>
           {isLikedCheck ? (
@@ -188,12 +196,13 @@ const Post = ({
             name="comment-text"
             size={25}
             style={{marginRight: 5}}
+            onPress={() => navigation.navigate('Comment', {postId: postId})}
           />
           <Text style={{fontWeight: '500', fontSize: 16}}>{commentCount}</Text>
         </IconContainer>
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: '500',
             color: 'grey',
           }}>
@@ -212,7 +221,7 @@ const Post = ({
       </Text>
       <AddCommentContainer>
         <Image
-          url={profileUrl}
+          url={user.photoUrl}
           rounded
           imageStyle={{width: 30, height: 30, marginRight: 6}}
         />

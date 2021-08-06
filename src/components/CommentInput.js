@@ -13,7 +13,7 @@ const Container = styled.Pressable`
   border-color: ${({theme}) => theme.imageBackground};
   border-style: solid;
   padding-horizontal: 20px;
-  padding-top: 24px;
+  padding-top: 20px;
   /* padding-bottom: 30px; */
   flex-direction: row;
   justify-content: space-between;
@@ -27,6 +27,7 @@ const InsideInput = styled.TextInput`
   border-radius: 50px;
   padding-horizontal: 20px;
   font-size: 18px;
+  margin-top: 8px;
 `;
 
 const CommentInput = ({

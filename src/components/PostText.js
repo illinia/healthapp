@@ -10,7 +10,7 @@ const Container = styled.View`
 const PostText = ({textContent}) => {
   return (
     <Container>
-      <Text style={{fontSize: 18, fontWeight: '400'}}>{textContent}</Text>
+      <Text style={{fontSize: 16, fontWeight: '400'}}>{textContent}</Text>
     </Container>
   );
 };

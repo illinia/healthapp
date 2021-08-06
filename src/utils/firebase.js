@@ -191,9 +191,12 @@ const uploadSNSImage = async (url, postId) => {
 
 export const updatePost = async (content, photoUrl, postId) => {
   const postRef = await DB.collection('sns').doc(postId);
+  const storageUrl = photoUrl.startsWith('https')
+    ? photoUrl
+    : await uploadSNSImage(photoUrl, postId);
   await postRef.update({
     content: content,
-    photoURL: photoUrl,
+    photoURL: storageUrl,
     createdAt: Date.now(),
   });
 };

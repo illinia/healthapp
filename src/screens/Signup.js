@@ -68,7 +68,7 @@ const Signup = () => {
   }, [name, email, password, passwordConfirm, errorMessage]);
 
   const _handleSignupButtonPress = async () => {
-    if (photoUrl) {
+    if (photoUrl && !disabled) {
       try {
         spinner.start();
         const user = await signup({email, password, name, photoUrl});
