@@ -12,7 +12,7 @@
 
 
 Many calculating apps are too much complex.<br>
-This app has simple SNS, calculating, profile function and is going to have Chat function soon.
+This app has simple SNS, calculating, profile and chat function.
 
 ## How To Use
 
@@ -59,6 +59,10 @@ cd healthapp && npm run ios
 ## History
 <details>
     <summary>Detail</summary>
+* 09 Aug
+    * Make chat list, delete function
+    * Make chat room function
+    * Make message list, send message function
 * 06 Aug
     * Make update, delete post function
     * Make add comment function in comment page
@@ -99,6 +103,11 @@ cd healthapp && npm run ios
 <br>
 
 ## Deploy History
+* 0.2.0
+    * Chat function
+        * Chat room list
+        * Make new chat room
+        * Show and send message in chat room
 * 0.1.0
     * SNS function
         * Post list
@@ -116,7 +125,7 @@ cd healthapp && npm run ios
 - [ ] Edit name
 - [ ] Sign up with email authentication
 - [x] SNS function
-- [ ] Chat function
+- [x] Chat function
 
 ## Meta
 * Developed by Taemin Kim
