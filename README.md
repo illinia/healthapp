@@ -59,6 +59,7 @@ cd healthapp && npm run ios
 ## History
 <details>
     <summary>Detail</summary>
+    
 * 09 Aug
     * Make chat list, delete function
     * Make chat room function
