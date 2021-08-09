@@ -9,8 +9,9 @@ import DetailMeal from './DetailMeal';
 import DetailFood from './DetailFood';
 import DetailInfo from './DetailInfo';
 import SNSWritepost from './SNSWritepost';
-import SNSEditpost from './SNSEditpost';
 import SNSComment from './SNSComment';
+import ChatMaking from './ChatMaking';
+import ChatRoom from './ChatRoom';
 
 export {
   Login,
@@ -24,6 +25,7 @@ export {
   DetailFood,
   DetailInfo,
   SNSWritepost,
-  SNSEditpost,
   SNSComment,
+  ChatMaking,
+  ChatRoom,
 };

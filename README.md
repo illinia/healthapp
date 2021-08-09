@@ -1,4 +1,4 @@
-# Healthapp portfolio
+# Healthapp Portfolio
 > Manage diet, share life, make friends
 
 ![npm-image]
@@ -12,12 +12,12 @@
 
 
 Many calculating apps are too much complex.<br>
-This app has simple calculating, profile function and is going to have SNS, Chat functions soon.
+This app has simple SNS, calculating, profile function and is going to have Chat function soon.
 
-## How to use
+## How To Use
 
 <details>
-    <summary>자세히</summary>
+    <summary>Detail</summary>
     <br>
 
 *How to login*
@@ -43,7 +43,7 @@ This app has simple calculating, profile function and is going to have SNS, Chat
 </details>
 <br>
 
-## Installation
+## Install
 *first terminal*
 ```
 git clone https://github.com/illinia/healthapp.git
@@ -57,6 +57,8 @@ cd healthapp && npm run ios
 ```
 
 ## History
+<details>
+    <summary>Detail</summary>
 * 06 Aug
     * Make update, delete post function
     * Make add comment function in comment page
@@ -93,8 +95,16 @@ cd healthapp && npm run ios
 * 17 Jul ~ 19 Jul
     * Manage ideas
     * UX, UI design [Whimsical](https://whimsical.com)
+</details>
+<br>
 
 ## Deploy History
+* 0.1.0
+    * SNS function
+        * Post list
+        * Write, update, delete post
+        * Write, delete comment
+        * Like, unlike function
 * 0.0.0
     * Connect firebase
     * Login with email, password
@@ -103,15 +113,10 @@ cd healthapp && npm run ios
     * Edit profile picture
 
 ## Coming Release
-* Edit name
-* Sign up with email authentication
-* SNS function
-* Chat function
-* App store release
-
-## Issues
-* SDK for OAuth Login error
-* Android build problem
+- [ ] Edit name
+- [ ] Sign up with email authentication
+- [x] SNS function
+- [ ] Chat function
 
 ## Meta
 * Developed by Taemin Kim

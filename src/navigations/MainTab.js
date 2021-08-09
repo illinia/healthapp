@@ -16,16 +16,29 @@ const MainTab = ({navigation, route}) => {
     const index = route.state?.index || 0;
     navigation.setOptions({
       headerTitle: titles[index],
-      headerRight: () =>
-        index === 0 && (
-          <AntDesign
-            name="plus"
-            size={30}
-            style={{marginRight: 15}}
-            color="black"
-            onPress={() => navigation.navigate('New Post')}
-          />
-        ),
+      headerRight: () => {
+        if (index === 0) {
+          return (
+            <AntDesign
+              name="plus"
+              size={25}
+              style={{marginRight: 15}}
+              color="black"
+              onPress={() => navigation.navigate('New Post')}
+            />
+          );
+        } else if (index === 1) {
+          return (
+            <AntDesign
+              name="plus"
+              size={25}
+              style={{marginRight: 15}}
+              color="black"
+              onPress={() => navigation.navigate('New Chat')}
+            />
+          );
+        }
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);

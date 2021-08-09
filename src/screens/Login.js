@@ -85,7 +85,7 @@ const Login = ({navigation}) => {
           value={email}
           onChangeText={_handleEmailChange}
           onSubmitEditing={() => passwordRef.current.focus()}
-          placeholder="Email"
+          // placeholder="Enter email"
           returnKeyType="next"
         />
         <Input
@@ -94,7 +94,7 @@ const Login = ({navigation}) => {
           value={password}
           onChangeText={_handlePasswordChange}
           onSubmitEditing={_handleLoginButtonPress}
-          placeholder="Password"
+          // placeholder="Enter password"
           returnKeyType="done"
           isPassword
         />

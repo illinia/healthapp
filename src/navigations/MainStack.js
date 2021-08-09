@@ -3,12 +3,13 @@ import {ThemeContext} from 'styled-components/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import MainTab from './MainTab';
 import {
+  ChatMaking,
+  ChatRoom,
   DetailFood,
   DetailInfo,
   DetailMeal,
   MealPlanner,
   SNSComment,
-  SNSEditpost,
   SNSWritepost,
 } from '../screens';
 
@@ -32,8 +33,9 @@ const MainStack = () => {
       <Stack.Screen name="DetailFood" component={DetailFood} />
       <Stack.Screen name="DetailInfo" component={DetailInfo} />
       <Stack.Screen name="Comment" component={SNSComment} />
-      <Stack.Screen name="Edit" component={SNSEditpost} />
       <Stack.Screen name="New Post" component={SNSWritepost} />
+      <Stack.Screen name="New Chat" component={ChatMaking} />
+      <Stack.Screen name="Chat Room" component={ChatRoom} />
     </Stack.Navigator>
   );
 };

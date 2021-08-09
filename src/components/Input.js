@@ -5,7 +5,6 @@ import styled from 'styled-components/native';
 const Container = styled.View`
   flex-direction: column;
   width: 100%;
-  margin: 10px 0;
 `;
 
 const Label = styled.Text`
@@ -22,10 +21,11 @@ const StyledTextInput = styled.TextInput.attrs(({theme}) => ({
   background-color: ${({theme, editable}) =>
     editable ? theme.background : theme.inputDisabledBackground};
   color: ${({theme}) => theme.text};
-  padding: 16px 10px;
+  padding: 10px 10px;
   font-size: 16px;
-  border: 1px solid
-    ${({theme, isFocused}) => (isFocused ? theme.text : theme.inputBorder)};
+  border-bottom-color: ${({theme, isFocused}) =>
+    isFocused ? theme.text : theme.inputBorder};
+  border-bottom-width: 1px;
   border-radius: 10px;
 `;
 
@@ -43,13 +43,14 @@ const Input = forwardRef(
       maxLength,
       disabled,
       inputStyle,
+      inputContainerStyle,
     },
     ref,
   ) => {
     const [isFocused, setIsFocused] = useState(false);
 
     return (
-      <Container>
+      <Container style={inputContainerStyle}>
         <Label isFocused={isFocused}>{label}</Label>
         <StyledTextInput
           ref={ref}
@@ -84,6 +85,8 @@ Input.defaultProps = {
   onSubmitEditing: () => {},
   ref: '',
   inputStyle: {},
+  label: '',
+  inputContainerStyle: {marginVertical: 10},
 };
 
 Input.propTypes = {

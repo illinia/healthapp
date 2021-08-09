@@ -68,7 +68,7 @@ const Signup = () => {
   }, [name, email, password, passwordConfirm, errorMessage]);
 
   const _handleSignupButtonPress = async () => {
-    if (photoUrl && !disabled) {
+    if (photoUrl) {
       try {
         spinner.start();
         const user = await signup({email, password, name, photoUrl});
@@ -103,7 +103,7 @@ const Signup = () => {
             emailRef.current.focus();
           }}
           onBlur={() => setName(name.trim())}
-          placeholder="Name"
+          // placeholder="Name"
           returnKeyType="next"
         />
         <Input
@@ -112,7 +112,7 @@ const Signup = () => {
           value={email}
           onChangeText={text => setEmail(removeWhitespace(text))}
           onSubmitEditing={() => passwordRef.current.focus()}
-          placeholder="Email"
+          // placeholder="Email"
           returnKeyType="next"
         />
         <Input
@@ -121,7 +121,7 @@ const Signup = () => {
           value={password}
           onChangeText={text => setPassword(removeWhitespace(text))}
           onSubmitEditing={() => passwordConfirmRef.current.focus()}
-          placeholder="Password"
+          // placeholder="Password"
           returnKeyType="done"
           isPassword
         />
@@ -131,7 +131,7 @@ const Signup = () => {
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(removeWhitespace(text))}
           onSubmitEditing={_handleSignupButtonPress}
-          placeholder="Password"
+          // placeholder="Password"
           returnKeyType="done"
           isPassword
         />

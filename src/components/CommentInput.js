@@ -9,12 +9,11 @@ const Container = styled.Pressable`
   width: 100%;
   height: 220px;
   background-color: ${({theme}) => theme.background};
-  border-top-width: 2px;
+  border-top-width: 1px;
   border-color: ${({theme}) => theme.imageBackground};
   border-style: solid;
   padding-horizontal: 20px;
   padding-top: 20px;
-  /* padding-bottom: 30px; */
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;

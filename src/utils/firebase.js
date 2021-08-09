@@ -205,3 +205,32 @@ export const deletePost = async postId => {
   const postRef = await DB.collection('sns').doc(postId);
   await postRef.delete();
 };
+
+export const deleteChat = async chatId => {
+  const chatRef = await DB.collection('chat').doc(chatId);
+  await chatRef.delete();
+};
+
+export const makeChat = async ({title, description}) => {
+  const newChatRef = DB.collection('chat').doc();
+  const id = newChatRef.id;
+  const newChat = {
+    id,
+    title,
+    description,
+    createdAt: Date.now(),
+  };
+  await newChatRef.set(newChat);
+  return id;
+};
+
+export const createMessage = async ({channelId, message}) => {
+  return await DB.collection('chat')
+    .doc(channelId)
+    .collection('messages')
+    .doc(message._id)
+    .set({
+      ...message,
+      createdAt: Date.now(),
+    });
+};

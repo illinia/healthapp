@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {FlatList, RefreshControl} from 'react-native';
-import {DB, getCurrentUser, isLiked} from '../utils/firebase';
+import {DB, getCurrentUser} from '../utils/firebase';
 import styled from 'styled-components/native';
 import {Post} from '../components';
 import moment from 'moment';
