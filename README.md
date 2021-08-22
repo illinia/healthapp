@@ -16,7 +16,7 @@ This app has simple SNS, calculating, profile and chat function.
 
 ## How To Use
 
-<div style="display: flex;">
+<div style="display: flex;" align=center>
 
 ![sns](https://user-images.githubusercontent.com/67290425/130349021-b0aada83-bf3f-4ae3-8e01-bf954db5e7e5.PNG)
 
