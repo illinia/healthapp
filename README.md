@@ -59,6 +59,10 @@ _How to update and delete post_
 
 ## Install
 
+❗️If u wanna run, please ask me firebase key❗️
+
+Put firebase.json file in root folder = healthapp
+
 _first terminal_
 
 ```

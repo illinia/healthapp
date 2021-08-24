@@ -6,13 +6,13 @@ export const app = firebase.initializeApp(config);
 
 const Auth = app.auth();
 
-export const login = async ({email, password}) => {
-  const {user} = await Auth.signInWithEmailAndPassword(email, password);
+export const login = async ({ email, password }) => {
+  const { user } = await Auth.signInWithEmailAndPassword(email, password);
   return user;
 };
 
-export const signup = async ({email, password, name, photoUrl}) => {
-  const {user} = await Auth.createUserWithEmailAndPassword(email, password);
+export const signup = async ({ email, password, name, photoUrl }) => {
+  const { user } = await Auth.createUserWithEmailAndPassword(email, password);
   const storageUrl = photoUrl.startsWith('https')
     ? photoUrl
     : await uploadImage(photoUrl);
@@ -38,7 +38,7 @@ const uploadImage = async url => {
     xhr.send(null);
   });
   const ref = app.storage().ref(`/profiles/${user.uid}/photo.png`);
-  const snapshot = await ref.put(blob, {contentType: 'image/png'});
+  const snapshot = await ref.put(blob, { contentType: 'image/png' });
 
   blob.close();
   return await snapshot.ref.getDownloadURL();
@@ -49,8 +49,8 @@ export const logout = async () => {
 };
 
 export const getCurrentUser = () => {
-  const {uid, displayName, email, photoURL} = Auth.currentUser;
-  return {uid, name: displayName, email, photoUrl: photoURL};
+  const { uid, displayName, email, photoURL } = Auth.currentUser;
+  return { uid, name: displayName, email, photoUrl: photoURL };
 };
 
 export const updateUserPhoto = async photoUrl => {
@@ -58,14 +58,14 @@ export const updateUserPhoto = async photoUrl => {
   const storageUrl = photoUrl.startsWith('https')
     ? photoUrl
     : await uploadImage(photoUrl);
-  await user.updateProfile({photoURL: storageUrl});
-  return {name: user.displayName, email: user.email, photoUrl: user.photoURL};
+  await user.updateProfile({ photoURL: storageUrl });
+  return { name: user.displayName, email: user.email, photoUrl: user.photoURL };
 };
 
 export const DB = firebase.firestore();
 
 export const createMeal = async meals => {
-  const {uid} = getCurrentUser();
+  const { uid } = getCurrentUser();
   const newMeal = {
     id: uid,
     meals: meals,
@@ -79,7 +79,7 @@ export const addComment = async (content, postId) => {
   const user = getCurrentUser();
   const postRef = await DB.collection('sns').doc(postId);
   const getDoc = await postRef.get();
-  const {comment} = await getDoc.data();
+  const { comment } = await getDoc.data();
   const id = postRef.collection('comment').doc().id;
   const commentValue = {
     id,
@@ -91,20 +91,20 @@ export const addComment = async (content, postId) => {
   };
   await postRef.collection('comment').doc(id).set(commentValue);
   const commentCount = comment + 1;
-  await postRef.update({comment: commentCount});
+  await postRef.update({ comment: commentCount });
 };
 
 export const deleteComment = async (postId, commentId) => {
   const postRef = await DB.collection('sns').doc(postId);
   const getDoc = await postRef.get();
-  const {comment} = await getDoc.data();
+  const { comment } = await getDoc.data();
   const commentCount = comment - 1;
-  await postRef.update({comment: commentCount});
+  await postRef.update({ comment: commentCount });
   await postRef
     .collection('comment')
     .doc(commentId)
     .delete()
-    .then(() => {})
+    .then(() => { })
     .catch(e => {
       console.log(e);
     });
@@ -114,9 +114,9 @@ export const pressLike = async postId => {
   const user = getCurrentUser();
   const postRef = await DB.collection('sns').doc(postId);
   const getDoc = await postRef.get();
-  const {like} = await getDoc.data();
+  const { like } = await getDoc.data();
   const likeCount = like + 1;
-  await postRef.update({like: likeCount});
+  await postRef.update({ like: likeCount });
   await postRef.collection('like').doc(user.uid).set({});
 };
 
@@ -133,20 +133,20 @@ export const unLike = async postId => {
   const user = getCurrentUser();
   const postRef = await DB.collection('sns').doc(postId);
   const getDoc = await postRef.get();
-  const {like} = await getDoc.data();
+  const { like } = await getDoc.data();
   const likeCount = like - 1;
-  await postRef.update({like: likeCount});
+  await postRef.update({ like: likeCount });
   await postRef
     .collection('like')
     .doc(user.uid)
     .delete()
-    .then(() => {})
+    .then(() => { })
     .catch(e => {
       console.log(e);
     });
 };
 
-export const createPost = async ({content, photoUrl}) => {
+export const createPost = async ({ content, photoUrl }) => {
   const user = getCurrentUser();
   const newPostRef = DB.collection('sns').doc();
   const id = newPostRef.id;
@@ -183,7 +183,7 @@ const uploadSNSImage = async (url, postId) => {
     xhr.send(null);
   });
   const ref = app.storage().ref(`/sns/${postId}/photo.png`);
-  const snapshot = await ref.put(blob, {contentType: 'image/png'});
+  const snapshot = await ref.put(blob, { contentType: 'image/png' });
 
   blob.close();
   return await snapshot.ref.getDownloadURL();
@@ -211,7 +211,7 @@ export const deleteChat = async chatId => {
   await chatRef.delete();
 };
 
-export const makeChat = async ({title, description}) => {
+export const makeChat = async ({ title, description }) => {
   const newChatRef = DB.collection('chat').doc();
   const id = newChatRef.id;
   const newChat = {
@@ -224,7 +224,7 @@ export const makeChat = async ({title, description}) => {
   return id;
 };
 
-export const createMessage = async ({channelId, message}) => {
+export const createMessage = async ({ channelId, message }) => {
   return await DB.collection('chat')
     .doc(channelId)
     .collection('messages')
