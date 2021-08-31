@@ -30,7 +30,7 @@ This app has simple SNS, calculating, profile and chat function.
 
 </div>
 
-<details>
+<details align=center>
     <summary>Detail</summary>
     <br>
 
